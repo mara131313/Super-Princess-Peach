@@ -1,6 +1,15 @@
 # SUPER PRINCESS PEACH
-Un joc de tip Score Attack in care personajul principal Printesa Piersicuta incearca sa scape de Bowser, 
-intampinand diferite obstacole pe parcursul traseului pe care trebuie sa le depaseasca intr-un timp limitat.
+   Toata lumea s-a jucat Super Mario Bros cand era mai mica sau macar a auzit de acest joc. Eu am decis sa-l recreez,
+insa o voi folosi pe Printesa Piersicuta ca personaj pprincipal, aratand partea de poveste in care ea incearca sa scape
+de Bowser cat timp Mario si Luigi o cauta. Aceasta va intampina aceleasi obstacole ca ei, precum si acelasi tip de 
+trasee, insa voi renunta la ideea de nivele, facand jocul de tip Score Attack. Printesa va avea un timp limitat pentru a
+scapa de Bowser. Pentru a reusi trebuie sa acumuleze un anumit scor in timpul alocat, prin invingerea monstruletilor si 
+colectarea banutilor. Daca moare inainte (atacata de monstruleti sau cazand), jocul se termina aratand GAME OVER.
+
+Comenzi:
+- sus - pentru a sari, a ocoli un atac sau, in cazul in care sari in capul monstruletilor ciuperca/testoasa, acestia mor
+- dreapta - pentru a merge in fata
+- stanga - pentru a merge in spate
 
 ### Important!
 Aveți voie cu cod generat de modele de limbaj la care nu ați contribuit semnificativ doar în folder-ul `generated`.
