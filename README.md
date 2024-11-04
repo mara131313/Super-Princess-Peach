@@ -26,7 +26,7 @@ Comenzi:
 #### Cerințe
 - [x] definirea a minim **3-4 clase** folosind compunere cu clasele definite de voi
 - [x] constructori de inițializare cu parametri
-- [ ] pentru o aceeași (singură) clasă: constructor de copiere, `operator=` de copiere, destructor
+- [x] pentru o aceeași (singură) clasă: constructor de copiere, `operator=` de copiere, destructor
 <!-- - [ ] pentru o altă clasă: constructor de mutare, `operator=` de mutare, destructor -->
 <!-- - [ ] pentru o altă clasă: toate cele 5 funcții membru speciale -->
 - [ ] `operator<<` pentru toate clasele pentru afișare (std::ostream)
@@ -36,7 +36,7 @@ Comenzi:
 - [x] scenariu de utilizare a claselor definite:
   - crearea de obiecte și apelarea tuturor funcțiilor membru publice în main
   - vor fi adăugate în fișierul `tastatura.txt` DOAR exemple de date de intrare de la tastatură (dacă există); dacă aveți nevoie de date din fișiere, creați alte fișiere separat
-- [ ] tag de `git`: de exemplu `v0.1`
+- [x] tag de `git`: de exemplu `v0.1`
 - [ ] serviciu de integrare continuă (CI); exemplu: GitHub Actions
 
 ## Tema 2
