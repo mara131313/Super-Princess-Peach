@@ -45,7 +45,7 @@ public:
         viata = _viata;
         viteza = _viteza;
     }
-    Enemies(cont Enemie& altEnemies) {
+    Enemies(const Enemies& altEnemies) {
         viata = altEnemies.viata;
         viteza = altEnemies.viteza;
         atac = altEnemies.atac;
