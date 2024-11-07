@@ -1,5 +1,6 @@
 #include <iostream>
 #include <array>
+#include <SFML/Graphics.hpp>
 
 #include <Helper.h>
 
@@ -31,32 +32,33 @@ public:
     }
 };
 
-class Enemies
+class Enemy
 {
 private:
     int viata, viteza, x, y, atac;
 public:
-    Enemies() {
+    Enemy() {
         viata = 50;
         viteza = 20;
         atac = 50;
     }
-    Enemies(int _viata, int _viteza) {
+    Enemy(int _viata, int _viteza, int _atac) {
         viata = _viata;
         viteza = _viteza;
+        atac = _atac;
     }
-    Enemies(const Enemies& altEnemies) {
+    Enemy(const Enemy& altEnemies) {
         viata = altEnemies.viata;
         viteza = altEnemies.viteza;
         atac = altEnemies.atac;
     }
-    Enemies& operator=(const Enemies& altEnemy) {
+    Enemy& operator=(const Enemy& altEnemy) {
         viata = altEnemy.viata;
         viteza = altEnemy.viteza;
         std::cout << "Operator '=' apelat" << std::endl;
         return *this;
     }
-    ~Enemies() {
+    ~Enemy() {
         std::cout << "Enemies fost eliberat" << std::endl;
     }
 };
@@ -71,9 +73,28 @@ public:
 };
 
 int main() {
-    Personaj printesa;
-    Enemies Cosmin, Victor, Maria;
+    Personaj Mara;
+    Enemy Cosmin, Victor, Maria;
     Cosmin = Victor = Maria;
     Environment spatiu;
+    sf::RenderWindow window(sf::VideoMode(840, 600), "Super Princess Peach");
+    while (window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if(event.type == sf::Event::Closed)
+                window.close();
+        }
+        window.clear(sf::Color::Cyan);
+        sf::RectangleShape rectangle(sf::Vector2f(120.f,50.f));
+        rectangle.setSize(sf::Vector2f(840.f, 100.f));
+        rectangle.setPosition(sf::Vector2f(0.f, 500.f));
+        rectangle.setFillColor(sf::Color{107, 31, 31, 250});
+        window.draw(rectangle);
+        rectangle.setSize(sf::Vector2f(840, 20));
+        rectangle.setPosition(sf::Vector2f(0.f, 480.f));
+        rectangle.setFillColor(sf::Color{33, 206, 108, 250});
+        window.draw(rectangle);
+        window.display();
+    }
     return 0;
 }
