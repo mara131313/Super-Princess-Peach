@@ -16,13 +16,20 @@ int main() {
     Cosmin = Victor = Maria = Dimu = Alex;
     std::vector<Platforma> platforms = {
         Platforma(0.f, 480.f, 650.f, 20.f, sf::Color{33, 206, 108}),
+        Platforma(0.f, 500.f, 650.f, 500.f, sf::Color{107, 31, 31}),
+
         Platforma(800.f, 480.f, 100.f, 20.f, sf::Color{33, 206, 108}),
+        Platforma(800.f, 500.f, 100.f, 100.f, sf::Color{107, 31, 31}),
+
         Platforma(1050.f, 480.f, 450.f, 20.f, sf::Color{33, 206, 108}),
-        Platforma(550.f, 230.f, 50.f, 20.f, sf::Color{33, 206, 108})
+        Platforma(1050.f, 500.f, 450.f, 100.f, sf::Color{107, 31, 31}),
+
+        Platforma(550.f, 330.f, 50.f, 20.f, sf::Color{33, 206, 108}),
+        Platforma(550.f, 350.f, 50.f, 30.f, sf::Color{107, 31, 31})
     };
 
-    const float gravity = 0.5f;
-    const float moveSpeed = 1.f;
+    const float gravity = 0.3f;
+    const float moveSpeed = 0.8f;
 
     while (window.isOpen()) {
         sf::Event event;
@@ -38,7 +45,7 @@ int main() {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
             Mara.walk(moveSpeed, platforms, gravity);
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
             Mara.jump();
         }
 

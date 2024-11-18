@@ -13,8 +13,9 @@ public:
     const sf::RectangleShape& getShape() const {
         return platformShape;
     }
-    bool verif(const sf::RectangleShape& fm_pers) const {
-        return platformShape.getGlobalBounds().intersects(fm_pers.getGlobalBounds());
+    bool verif(const sf::RectangleShape& pers) const {
+        return pers.getGlobalBounds().intersects(platformShape.getGlobalBounds()) &&
+            pers.getPosition().y + pers.getSize().y <= platformShape.getPosition().y + 5.f;
     }
     void draw(sf::RenderWindow& window) const {
         window.draw(platformShape);
