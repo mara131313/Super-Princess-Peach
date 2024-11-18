@@ -53,7 +53,7 @@ endif()
 add_executable(${PROJECT_NAME}
         main.cpp
         generated/src/Helper.cpp
-        headers/Environment.h
+        headers/Platforma.h
 )
 
 include(cmake/CompilerFlags.cmake)

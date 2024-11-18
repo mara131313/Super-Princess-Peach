@@ -33,6 +33,6 @@ public:
 
     }
     ~Enemy() {
-        std::cout << "Enemies fost eliberat" << std::endl;
+        std::cout << "Enemies a fost eliberat" << std::endl;
     }
 };
