@@ -71,10 +71,11 @@ public:
         }
         shape.move(0, velocity.y);
     }
-    void jump() {
+    void jump(float dx) {
         if (isOnGround)
         {
-            velocity.y = -10.f;
+            velocity.y = -6.f;
+            shape.move(dx * 10.f, 0);
             isOnGround = false;
         }
     }

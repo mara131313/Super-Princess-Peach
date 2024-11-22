@@ -28,7 +28,7 @@ int main() {
         Platforma(550.f, 350.f, 50.f, 30.f, sf::Color{107, 31, 31})
     };
 
-    const float gravity = 0.3f;
+    const float gravity = 0.2f;
     const float moveSpeed = 0.8f;
 
     while (window.isOpen()) {
@@ -45,8 +45,14 @@ int main() {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
             Mara.walk(moveSpeed, platforms, gravity);
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-            Mara.jump();
+        if ((sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))) {
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+                Mara.jump(-1.f);
+            } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+                Mara.jump(1.f);
+            } else {
+                Mara.jump(0.f);
+            }
         }
 
         Mara.walk(0.f, platforms, gravity);
