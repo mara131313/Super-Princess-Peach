@@ -1,16 +1,36 @@
 #include <iostream>
-#include <array>
+#include <SFML/OpenGL.hpp>
+#include <vector>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
-#include "headers/Platforma.h"
-
+#ifdef __APPLE__
+#include <dispatch/dispatch.h>
+#endif
 #include <Helper.h>
-#include "headers/Personaj.h"
+#include "headers/Platforma.h"
 #include "headers/Enemy.h"
+#include "headers/Personaj.h"
 #include "headers/atac.h"
 
 int main() {
-    sf::RenderWindow window(sf::VideoMode(1500, 600), "Super Princess Peach");
+    sf::ContextSettings settings;
+    settings.antialiasingLevel = 4;
+    settings.majorVersion = 3;
+    settings.minorVersion = 0;
+    settings.sRgbCapable = false;
+
+    sf::RenderWindow window(sf::VideoMode(1500, 600), "Super Princess Peach", sf::Style::Default, settings);
+
+    const GLubyte* glVersion = glGetString(GL_VERSION);
+    const GLubyte* glVendor = glGetString(GL_VENDOR);
+
+    if (!glVersion || !glVendor)
+        return EXIT_FAILURE;
+
+    if (std::stof(reinterpret_cast<const char*>(glVersion)) < 3.0f) {
+        std::cerr << "eroare! versiunea curenta OpenGL: " << glVersion << std::endl;
+        return EXIT_FAILURE;
+    }
     Personaj Mara(100, 50, 100.f, 400.f);
     //atac foc, atingere;
     Enemy Cosmin, Victor, Maria, Dimu, Alex;

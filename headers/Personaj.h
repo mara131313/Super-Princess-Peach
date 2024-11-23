@@ -17,7 +17,7 @@ private:
 
 public:
     Personaj(int _viata, int _atac, float _x, float _y) :
-    viata(_viata), atac(_atac), x(_x), y(_y), isOnGround(false), velocity(0.f, 0.f) {
+    viata(_viata), atac(_atac), x(_x), y(_y), velocity(0.f, 0.f), isOnGround(false) {
         shape.setSize(sf::Vector2f(40.f, 40.f));
         shape.setFillColor(sf::Color::Magenta);
         shape.setPosition(x, y);
@@ -67,7 +67,7 @@ public:
 
         if (shape.getPosition().x < 0)
             shape.setPosition(0, shape.getPosition().y);
-        else if (shape.getPosition().x + shape.getPosition().x > 1500)
+        else if (shape.getPosition().x + shape.getSize().x > 1500)
             shape.setPosition(1500 - shape.getSize().x, shape.getPosition().y);
         if (!isOnGround) {
             velocity.y += grav;
