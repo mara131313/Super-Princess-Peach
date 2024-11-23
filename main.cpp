@@ -1,6 +1,7 @@
 #include <iostream>
 #include <array>
 #include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
 #include "headers/Platforma.h"
 
 #include <Helper.h>
@@ -10,8 +11,8 @@
 
 int main() {
     sf::RenderWindow window(sf::VideoMode(1500, 600), "Super Princess Peach");
-    Personaj Mara;
-    atac foc, atingere;
+    Personaj Mara(100, 50, 100.f, 400.f);
+    //atac foc, atingere;
     Enemy Cosmin, Victor, Maria, Dimu, Alex;
     Cosmin = Victor = Maria = Dimu = Alex;
     std::vector<Platforma> platforms = {

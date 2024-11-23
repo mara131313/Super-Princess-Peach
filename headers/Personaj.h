@@ -4,26 +4,18 @@
 #include <SFML/Window.hpp>
 #include <vector>
 #include "Platforma.h"
+#include "Enemy.h"
 
 class Personaj
 {
 private:
-    int viata;
-    int atac;
+    int viata, atac;
     float x, y;
     sf::RectangleShape shape;
     sf::Vector2f velocity;
     bool isOnGround;
 
 public:
-    Personaj() :
-        viata(100), atac(50), x(1), y(1), isOnGround(false), velocity(0.f, 0.f) {
-        shape.setSize(sf::Vector2f(40.f, 80.f));
-        shape.setFillColor(sf::Color::Magenta);
-        shape.setPosition(100.f, 400.f);
-
-    }
-
     Personaj(int _viata, int _atac, float _x, float _y) :
     viata(_viata), atac(_atac), x(_x), y(_y), isOnGround(false), velocity(0.f, 0.f) {
         shape.setSize(sf::Vector2f(40.f, 40.f));
@@ -32,12 +24,42 @@ public:
         std::cout << "Personajul a fost creat" << std::endl;
     }
 
-    void attack() {
+    Personaj(Personaj& altPers) :
+    viata(altPers.viata), atac(altPers.atac), x(altPers.x), y(altPers.y), shape(altPers.shape),
+    velocity(altPers.velocity), isOnGround(altPers.isOnGround) {
+        std::cout << "Constructor de copiere" << std::endl;
+    }
 
+    Personaj& operator = (const Personaj& altPers) {
+        if (this == &altPers)
+            return *this;
+        viata = altPers.viata;
+        atac = altPers.atac;
+        x = altPers.x;
+        y = altPers.y;
+        shape = altPers.shape;
+        velocity = altPers.velocity;
+        isOnGround = altPers.isOnGround;
+        std::cout << "Operator = apelat" << std::endl;
+        return *this;
+    }
+
+    ~Personaj() {
+        std::cout << "Personajul a fost eliberat" << std::endl;
+    }
+
+    void attacked(const Enemy& enemy) {
+
+        viata -= enemy.getAtac();
+        std::cout << "Viata ramasa: " << viata << std::endl;
     }
 
     void heal() {
 
+        viata += 50;
+        if (viata > 100)
+            viata = 100;
+        std::cout << "Viata actuala: " << viata << std::endl;
     }
 
     void walk(float dx, const std::vector<Platforma>& platforms, float grav) {
@@ -71,6 +93,7 @@ public:
         }
         shape.move(0, velocity.y);
     }
+
     void jump(float dx) {
         if (isOnGround)
         {
@@ -86,8 +109,5 @@ public:
 
     void draw(sf::RenderWindow& window) const {
         window.draw(shape);
-    }
-    ~Personaj() {
-        std::cout << "Personajul a fost eliberat" << std::endl;
     }
 };
