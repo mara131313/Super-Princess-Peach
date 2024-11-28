@@ -57,6 +57,9 @@ add_executable(${PROJECT_NAME}
         main.cpp
         generated/src/Helper.cpp
         headers/Platforma.h
+        env_fixes.h
+        headers/Personaj.h
+        headers/Enemy.h
 )
 
 include(cmake/CompilerFlags.cmake)
