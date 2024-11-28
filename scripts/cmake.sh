@@ -5,7 +5,7 @@ DEFAULT_BUILD_TYPE="Debug"
 DEFAULT_INSTALL_DIR="install_dir"
 
 configure() {
-    # cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
+    cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
     #
     BUILD_DIR="${DEFAULT_BUILD_DIR}"
     BUILD_TYPE="${DEFAULT_BUILD_TYPE}"
@@ -48,7 +48,7 @@ configure() {
 }
 
 build() {
-    # cmake --build build --config Debug -j6
+    cmake --build build --config Debug -j6
     #
     BUILD_DIR="${DEFAULT_BUILD_DIR}"
     BUILD_TYPE="${DEFAULT_BUILD_TYPE}"
@@ -83,7 +83,7 @@ build() {
 }
 
 install() {
-    # cmake --install build --config Debug --prefix install_dir
+    cmake --install build --config Debug --prefix install_dir
     #
     BUILD_DIR="${DEFAULT_BUILD_DIR}"
     BUILD_TYPE="${DEFAULT_BUILD_TYPE}"
