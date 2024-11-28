@@ -4,6 +4,10 @@ description: 'Install and run cppcheck'
 runs:
   using: "composite"
   steps:
+    - name: Install Linux Dependencies
+      if: runner.os == 'Linux'
+      uses: ./.github/actions/install-linux-deps
+
     - name: Cache cppcheck
       uses: actions/cache/restore@v4
       id: cache-cppcheck
@@ -37,6 +41,7 @@ runs:
       uses: ./.github/actions/configure-cmake
       with:
         custom_flags: '-DCMAKE_EXPORT_COMPILE_COMMANDS=ON'
+        cache_key: 'cache-cppcheck'
 
     - name: Cppcheck
       shell: bash

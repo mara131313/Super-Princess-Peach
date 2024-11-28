@@ -98,7 +98,7 @@ public:
         if (isOnGround)
         {
             velocity.y = -6.f;
-            shape.move(dx * 10.f, 0);
+            shape.move(dx * 10.f, velocity.y);
             isOnGround = false;
         }
     }
