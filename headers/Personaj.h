@@ -13,11 +13,11 @@ private:
     float x, y;
     sf::RectangleShape shape;
     sf::Vector2f velocity;
-    bool isOnGround;
+    bool isOnGround, isJumping;
 
 public:
     Personaj(int _viata, int _atac, float _x, float _y) :
-    viata(_viata), atac(_atac), x(_x), y(_y), velocity(0.f, 0.f), isOnGround(false) {
+    viata(_viata), atac(_atac), x(_x), y(_y), velocity(0.f, 0.f), isOnGround(false), isJumping(false) {
         shape.setSize(sf::Vector2f(40.f, 40.f));
         shape.setFillColor(sf::Color::Magenta);
         shape.setPosition(x, y);
@@ -26,7 +26,7 @@ public:
 
     Personaj(Personaj& altPers) :
     viata(altPers.viata), atac(altPers.atac), x(altPers.x), y(altPers.y), shape(altPers.shape),
-    velocity(altPers.velocity), isOnGround(altPers.isOnGround) {
+    velocity(altPers.velocity), isOnGround(altPers.isOnGround), isJumping(altPers.isJumping) {
         std::cout << "Constructor de copiere" << std::endl;
     }
 
@@ -40,6 +40,7 @@ public:
         shape = altPers.shape;
         velocity = altPers.velocity;
         isOnGround = altPers.isOnGround;
+        isJumping = altPers.isJumping;
         std::cout << "Operator = apelat" << std::endl;
         return *this;
     }
@@ -95,16 +96,27 @@ public:
     }
 
     void jump(float dx) {
-        if (isOnGround)
+        if (isOnGround && !isJumping)
         {
             velocity.y = -6.f;
             shape.move(dx * 10.f, velocity.y);
             isOnGround = false;
+            isJumping = true;
         }
+    }
+
+    void resetJump() {
+        isJumping = false;
     }
 
     const sf::RectangleShape& getShape() const {
         return shape;
+    }
+
+    void GameOver() {
+        if(shape.getPosition().x < 0) {
+
+        }
     }
 
     void draw(sf::RenderWindow& window) const {
