@@ -20,5 +20,5 @@ public:
     void draw(sf::RenderWindow& window) const {
         window.draw(platformShape);
     }
-    ~Platforma() {}
+    ~Platforma() = default;
 };

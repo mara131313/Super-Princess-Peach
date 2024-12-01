@@ -56,10 +56,13 @@ find_package(OpenGL REQUIRED)
 add_executable(${PROJECT_NAME}
         main.cpp
         generated/src/Helper.cpp
-        headers/Platforma.h
         env_fixes.h
+        headers/Platforma.h
         headers/Personaj.h
         headers/Enemy.h
+        headers/atac.h
+        fonts/SuperShiny.ttf
+        fonts/VómitoCartoon.ttf
 )
 
 include(cmake/CompilerFlags.cmake)

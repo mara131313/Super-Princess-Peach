@@ -10,23 +10,36 @@ class Personaj
 {
 private:
     int viata, atac;
-    float x, y;
+    float viteza, x, y;
     sf::RectangleShape shape;
     sf::Vector2f velocity;
-    bool isOnGround, isJumping;
+    bool isOnGround, isJumping, isOver;
+
+    sf::Font font;
+    sf::Text text;
 
 public:
-    Personaj(int _viata, int _atac, float _x, float _y) :
-    viata(_viata), atac(_atac), x(_x), y(_y), velocity(0.f, 0.f), isOnGround(false), isJumping(false) {
+    Personaj(int _viata, int _atac, float _viteza, float _x, float _y) :
+    viata(_viata), atac(_atac), viteza(_viteza), x(_x), y(_y), velocity(0.f, 0.f), isOnGround(false), isJumping(false), isOver(false) {
         shape.setSize(sf::Vector2f(40.f, 40.f));
         shape.setFillColor(sf::Color::Magenta);
         shape.setPosition(x, y);
-        std::cout << "Personajul a fost creat" << std::endl;
+
+        if (!font.loadFromFile("fonts/VómitoCartoon.ttf")) {
+            std::cerr << "Eroare la incarcarea fontului!" << std::endl;
+        }
+
+        text.setFont(font);
+        text.setString("GAME OVER!!");
+        text.setCharacterSize(50);
+        text.setFillColor(sf::Color::Red);
+        text.setStyle(sf::Text::Bold);
+        text.setPosition(600.f, 300.f);
     }
 
-    Personaj(Personaj& altPers) :
-    viata(altPers.viata), atac(altPers.atac), x(altPers.x), y(altPers.y), shape(altPers.shape),
-    velocity(altPers.velocity), isOnGround(altPers.isOnGround), isJumping(altPers.isJumping) {
+    Personaj(const Personaj& altPers) :
+    viata(altPers.viata), atac(altPers.atac), viteza(altPers.viteza), x(altPers.x), y(altPers.y), shape(altPers.shape),
+    velocity(altPers.velocity), isOnGround(altPers.isOnGround), isJumping(altPers.isJumping), isOver(altPers.isOver) {
         std::cout << "Constructor de copiere" << std::endl;
     }
 
@@ -35,12 +48,14 @@ public:
             return *this;
         viata = altPers.viata;
         atac = altPers.atac;
+        viteza = altPers.viteza;
         x = altPers.x;
         y = altPers.y;
         shape = altPers.shape;
         velocity = altPers.velocity;
         isOnGround = altPers.isOnGround;
         isJumping = altPers.isJumping;
+        isOver = altPers.isOver;
         std::cout << "Operator = apelat" << std::endl;
         return *this;
     }
@@ -113,9 +128,20 @@ public:
         return shape;
     }
 
-    void GameOver() {
-        if(shape.getPosition().x < 0) {
+    int getViata() const {
+        return viata;
+    }
 
+    float getViteza() const {
+        return viteza;
+    }
+
+    void GameOver(sf::RenderWindow& window)  {
+        if (!isOver)
+        {
+            std::cout << "Game over!" << std::endl;
+            window.draw(text);
+            isOver = true;
         }
     }
 

@@ -3,14 +3,10 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
-#ifdef __APPLE__
-#include <dispatch/dispatch.h>
-#endif
-#include <Helper.h>
 #include "headers/Platforma.h"
 #include "headers/Enemy.h"
 #include "headers/Personaj.h"
-#include "headers/atac.h"
+// #include "headers/atac.h"
 
 int main() {
     sf::ContextSettings settings;
@@ -31,7 +27,7 @@ int main() {
         std::cerr << "eroare! versiunea curenta OpenGL: " << glVersion << std::endl;
         return EXIT_FAILURE;
     }
-    Personaj Mara(100, 50, 100.f, 400.f);
+    Personaj Mara(100, 50, 0.8f, 100.f, 400.f);
     //atac foc, atingere;
     Enemy Cosmin, Victor, Maria, Dimu, Alex;
     Cosmin = Victor = Maria = Dimu = Alex;
@@ -49,48 +45,52 @@ int main() {
         Platforma(550.f, 350.f, 50.f, 30.f, sf::Color{107, 31, 31})
     };
 
-    const float gravity = 0.2f;
-    const float moveSpeed = 0.8f;
+    sf::Event event = {};
+
     while (window.isOpen()) {
-        sf::Event event;
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 window.close();
-
-            if (event.type == sf::Event::KeyReleased) {
+            if (event.type == sf::Event::KeyReleased)
                 if (event.key.code == sf::Keyboard::W || event.key.code == sf::Keyboard::Up) {
                     Mara.resetJump();
                 }
-            }
         }
 
-        window.clear(sf::Color::Cyan);
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-            Mara.walk(-moveSpeed, platforms, gravity);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-            Mara.walk(moveSpeed, platforms, gravity);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-                Mara.jump(-1.f);
-            } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-                Mara.jump(1.f);
-            } else {
-                Mara.jump(0.f);
-            }
-        }
-
-        Mara.walk(0.f, platforms, gravity);
-
-        for (const auto& platform : platforms) {
-            platform.draw(window);
-        }
-
-        Mara.draw(window);
-
-        window.display();
+    if (Mara.getShape().getPosition().y > 600.f || Mara.getViata() <= 0) {
+        Mara.GameOver(window);
     }
+
+    window.clear(sf::Color::Cyan);
+
+    constexpr float gravity = 0.1f;
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+        Mara.walk(-Mara.getViteza(), platforms, gravity);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+        Mara.walk(Mara.getViteza(), platforms, gravity);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+            Mara.jump(-1.f);
+        } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+            Mara.jump(1.f);
+        } else {
+            Mara.jump(0.f);
+        }
+    }
+
+    Mara.walk(0.f, platforms, gravity);
+
+    for (const auto& platform : platforms) {
+        platform.draw(window);
+    }
+
+    Mara.draw(window);
+
+    window.display();
+}
+
     return 0;
 }
