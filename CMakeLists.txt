@@ -50,7 +50,7 @@ endif()
 ###############################################################################
 
 # Add OpenGL explicitly
-# find_package(OpenGL REQUIRED)
+find_package(OpenGL REQUIRED)
 
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
 add_executable(${PROJECT_NAME}
