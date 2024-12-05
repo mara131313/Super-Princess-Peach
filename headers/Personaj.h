@@ -151,10 +151,6 @@ public:
         return viata;
     }
 
-    float getViteza() const {
-        return viteza;
-    }
-
     void GameOver(sf::RenderWindow& window)  {
         if (!isOver)
         {
