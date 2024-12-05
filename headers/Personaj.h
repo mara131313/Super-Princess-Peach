@@ -25,7 +25,7 @@ public:
         shape.setFillColor(sf::Color::Magenta);
         shape.setPosition(x, y);
 
-        if (!font.loadFromFile("fonts/VómitoCartoon.ttf")) {
+        if (!font.loadFromFile("../fonts/VomitoCartoon.ttf")) {
             std::cerr << "Eroare la incarcarea fontului!" << std::endl;
         }
 
@@ -39,9 +39,7 @@ public:
 
     Personaj(const Personaj& altPers) :
     viata(altPers.viata), atac(altPers.atac), viteza(altPers.viteza), x(altPers.x), y(altPers.y), shape(altPers.shape),
-    velocity(altPers.velocity), isOnGround(altPers.isOnGround), isJumping(altPers.isJumping), isOver(altPers.isOver) {
-        std::cout << "Constructor de copiere" << std::endl;
-    }
+    velocity(altPers.velocity), isOnGround(altPers.isOnGround), isJumping(altPers.isJumping), isOver(altPers.isOver) {}
 
     Personaj& operator = (const Personaj& altPers) {
         if (this == &altPers)
@@ -56,7 +54,6 @@ public:
         isOnGround = altPers.isOnGround;
         isJumping = altPers.isJumping;
         isOver = altPers.isOver;
-        std::cout << "Operator = apelat" << std::endl;
         return *this;
     }
 
@@ -78,8 +75,29 @@ public:
         std::cout << "Viata actuala: " << viata << std::endl;
     }
 
-    void walk(float dx, const std::vector<Platforma>& platforms, float grav) {
-        shape.move(dx, 0);
+    void updateGround(const std::vector<Platforma>& platforms) {
+        isOnGround = false;
+
+        for (const auto& platform : platforms) {
+            if (platform.verif(shape)) {
+                float platformaSus = platform.getShape().getPosition().y;
+                float MaraJos = shape.getPosition().y + shape.getSize().y;
+
+                if (velocity.y >= 0 && MaraJos <= platformaSus + velocity.y) {
+                    isOnGround = true;
+                    velocity.y = 0;
+                    shape.setPosition(shape.getPosition().x, platformaSus - shape.getSize().y);
+                    break;
+                }
+            }
+        }
+    }
+
+    void walk(const int dir, const std::vector<Platforma>& platforms, const float grav) {
+        if(dir == -1)
+            shape.move(-viteza, 0);
+        else
+            shape.move(viteza, 0);
 
         if (shape.getPosition().x < 0)
             shape.setPosition(0, shape.getPosition().y);
@@ -91,37 +109,39 @@ public:
                 velocity.y = 5.f;
         }
 
-        isOnGround = false;
-
-        for (const auto& platform : platforms) {
-            if (platform.verif(shape)) {
-                float platformaSus = platform.getShape().getPosition().y;
-                float MaraJos = shape.getPosition().y + shape.getSize().y;
-
-                if (velocity.y > 0 && MaraJos <= platformaSus + velocity.y)
-                {
-                    isOnGround = true;
-                    velocity.y = 0;
-                    shape.setPosition(shape.getPosition().x, platformaSus- shape.getSize().y);
-                    break;
-                }
-            }
-        }
         shape.move(0, velocity.y);
+        updateGround(platforms);
     }
 
     void jump(float dx) {
         if (isOnGround && !isJumping)
         {
-            velocity.y = -6.f;
-            shape.move(dx * 10.f, velocity.y);
-            isOnGround = false;
+            if(velocity.y > -40.f)
+                velocity.y -= 6.f;
+            else
+                velocity.y += 6.f;
+            viteza = 3.f;
+            shape.move(viteza, velocity.y);
+            if(velocity.y < -40.f)
+                isOnGround = false;
             isJumping = true;
+
         }
+    }
+
+    void update(const std::vector<Platforma>& platforms, float grav) {
+        if (!isOnGround) {
+            velocity.y += grav;
+            if(velocity.y > 5.f)
+                velocity.y = 5.f;
+        }
+        shape.move(0, velocity.y);
+        updateGround(platforms);
     }
 
     void resetJump() {
         isJumping = false;
+        viteza = 0.8f;
     }
 
     const sf::RectangleShape& getShape() const {

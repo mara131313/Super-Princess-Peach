@@ -62,7 +62,7 @@ add_executable(${PROJECT_NAME}
         headers/Enemy.h
         headers/atac.h
         fonts/SuperShiny.ttf
-        fonts/VómitoCartoon.ttf
+        fonts/VomitoCartoon.ttf
 )
 
 include(cmake/CompilerFlags.cmake)

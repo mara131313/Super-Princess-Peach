@@ -23,7 +23,6 @@ public:
     Enemy& operator=(const Enemy& altEnemy) {
         viata = altEnemy.viata;
         viteza = altEnemy.viteza;
-        std::cout << "Operator '=' apelat" << std::endl;
         return *this;
     }
 

@@ -66,22 +66,16 @@ int main() {
     constexpr float gravity = 0.1f;
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-        Mara.walk(-Mara.getViteza(), platforms, gravity);
+        Mara.walk(-1, platforms, gravity);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-        Mara.walk(Mara.getViteza(), platforms, gravity);
+        Mara.walk(1, platforms, gravity);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-            Mara.jump(-1.f);
-        } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-            Mara.jump(1.f);
-        } else {
-            Mara.jump(0.f);
-        }
+        Mara.jump(0.f);
     }
 
-    Mara.walk(0.f, platforms, gravity);
+    Mara.update(platforms, gravity);
 
     for (const auto& platform : platforms) {
         platform.draw(window);
