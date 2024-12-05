@@ -17,16 +17,6 @@ int main() {
 
     sf::RenderWindow window(sf::VideoMode(1500, 600), "Super Princess Peach", sf::Style::Default, settings);
 
-    const GLubyte* glVersion = glGetString(GL_VERSION);
-    const GLubyte* glVendor = glGetString(GL_VENDOR);
-
-    if (!glVersion || !glVendor)
-        return EXIT_FAILURE;
-
-    if (std::stof(reinterpret_cast<const char*>(glVersion)) < 3.0f) {
-        std::cerr << "eroare! versiunea curenta OpenGL: " << glVersion << std::endl;
-        return EXIT_FAILURE;
-    }
     Personaj Mara(100, 50, 0.8f, 100.f, 400.f);
     //atac foc, atingere;
     Enemy Cosmin, Victor, Maria, Dimu, Alex;
@@ -72,7 +62,7 @@ int main() {
         Mara.walk(1, platforms, gravity);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-        Mara.jump(0.f);
+        Mara.jump();
     }
 
     Mara.update(platforms, gravity);

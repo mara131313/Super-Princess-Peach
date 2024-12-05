@@ -113,7 +113,7 @@ public:
         updateGround(platforms);
     }
 
-    void jump(float dx) {
+    void jump() {
         if (isOnGround && !isJumping)
         {
             if(velocity.y > -40.f)
@@ -125,7 +125,6 @@ public:
             if(velocity.y < -40.f)
                 isOnGround = false;
             isJumping = true;
-
         }
     }
 
