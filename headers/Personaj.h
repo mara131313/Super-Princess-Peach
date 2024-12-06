@@ -158,7 +158,7 @@ public:
         }
     }
 
-    void restart(sf::RenderWindow& window) {
+    void restart() {
         if(isOver) {
             isOver = false;
             shape.setSize(sf::Vector2f(40.f, 40.f));

@@ -26,9 +26,9 @@ public:
         return *this;
     }
 
-//    [[nodiscard]] int getAtac() const {
-//        return atac;
-//    }
+    [[nodiscard]] int getAtac() const {
+        return atac;
+    }
 
     ~Enemy() {
         std::cout << "Enemies a fost eliberat" << std::endl;
