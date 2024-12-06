@@ -50,7 +50,7 @@ int main() {
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
-        Mara.restart(window);
+        Mara.restart();
     }
 
     window.clear(sf::Color::Cyan);
