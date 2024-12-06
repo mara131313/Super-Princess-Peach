@@ -49,6 +49,10 @@ int main() {
         Mara.GameOver(window);
     }
 
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
+        Mara.restart(window);
+    }
+
     window.clear(sf::Color::Cyan);
 
     constexpr float gravity = 0.1f;
@@ -72,7 +76,7 @@ int main() {
     Mara.draw(window);
 
     window.display();
-}
+    }
 
     return 0;
 }

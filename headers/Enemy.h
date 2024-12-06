@@ -26,11 +26,16 @@ public:
         return *this;
     }
 
-    [[nodiscard]] int getAtac() const {
-        return atac;
-    }
+//    [[nodiscard]] int getAtac() const {
+//        return atac;
+//    }
 
     ~Enemy() {
         std::cout << "Enemies a fost eliberat" << std::endl;
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, const Enemy& enemy) {
+        os<< "ataca cu : " << enemy.atac<< "damage.";
+        return os;
     }
 };

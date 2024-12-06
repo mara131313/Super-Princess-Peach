@@ -5,8 +5,7 @@
 #include "Platforma.h"
 #include "Enemy.h"
 
-class Personaj
-{
+class Personaj {
 private:
     int viata, atac;
     float viteza, x, y;
@@ -153,13 +152,29 @@ public:
     void GameOver(sf::RenderWindow& window)  {
         if (!isOver)
         {
-            std::cout << "Game over!" << std::endl;
+            std::cout << "Game over! Ai murit! Apasa tasta R pentru a reincepe jocul." << std::endl;
             window.draw(text);
             isOver = true;
         }
     }
 
+    void restart(sf::RenderWindow& window) {
+        if(isOver) {
+            isOver = false;
+            shape.setSize(sf::Vector2f(40.f, 40.f));
+            shape.setFillColor(sf::Color::Magenta);
+            shape.setPosition(x, y);
+            std::cout << "Ai reinceput jocul!" << std::endl;
+            viata = 100;
+        }
+    }
+
     void draw(sf::RenderWindow& window) const {
         window.draw(shape);
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, const Personaj& p) {
+        os << "Viata personajului: " << p.viata;
+        return os;
     }
 };
