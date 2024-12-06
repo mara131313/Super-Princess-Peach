@@ -1,7 +1,6 @@
 #pragma once
 #include <iostream>
 #include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
 #include <vector>
 #include "Platforma.h"
 #include "Enemy.h"
@@ -120,7 +119,7 @@ public:
                 velocity.y -= 6.f;
             else
                 velocity.y += 6.f;
-            viteza = 3.f;
+            viteza = 2.75f;
             shape.move(viteza, velocity.y);
             if(velocity.y < -40.f)
                 isOnGround = false;

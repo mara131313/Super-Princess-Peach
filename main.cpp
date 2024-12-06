@@ -1,5 +1,3 @@
-#include <iostream>
-#include <SFML/OpenGL.hpp>
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
