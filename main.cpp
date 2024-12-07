@@ -17,7 +17,7 @@ int main() {
 
     Personaj Mara(100, 50, 0.8f, 100.f, 400.f);
     //atac foc, atingere;
-    Enemy Cosmin, Victor, Maria, Dimu, Alex;
+    Enemy Cosmin(50, 20, 50, 1, 1050, 420), Victor, Maria, Dimu, Alex;
     Cosmin = Victor = Maria = Dimu = Alex;
     std::vector<Platforma> platforms = {
         Platforma(0.f, 480.f, 650.f, 20.f, sf::Color{33, 206, 108}),
@@ -74,6 +74,7 @@ int main() {
     }
 
     Mara.draw(window);
+    Cosmin.draw(window);
 
     window.display();
     }

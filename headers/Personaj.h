@@ -118,7 +118,7 @@ public:
                 velocity.y -= 6.f;
             else
                 velocity.y += 6.f;
-            viteza = 2.75f;
+            viteza = 2.5f;
             shape.move(viteza, velocity.y);
             if(velocity.y < -40.f)
                 isOnGround = false;
@@ -152,7 +152,7 @@ public:
     void GameOver(sf::RenderWindow& window)  {
         if (!isOver)
         {
-            std::cout << "Game over! Ai murit! Apasa tasta R pentru a reincepe jocul." << std::endl;
+            std::cout << "Ai murit! Apasa tasta R pentru a reincepe jocul." << std::endl;
             window.draw(text);
             isOver = true;
         }
