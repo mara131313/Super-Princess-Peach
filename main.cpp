@@ -8,6 +8,7 @@
 
 int main() {
     sf::ContextSettings settings;
+    sf::Clock clock;
     settings.antialiasingLevel = 4;
     settings.majorVersion = 3;
     settings.minorVersion = 0;
@@ -17,8 +18,8 @@ int main() {
 
     Personaj Mara(100, 50, 0.8f, 100.f, 400.f);
     //atac foc, atingere;
-    Enemy Cosmin(50, 20, 50, 1, 1050, 420), Victor, Maria, Dimu, Alex;
-    Cosmin = Victor = Maria = Dimu = Alex;
+    Enemy Cosmin(50, 20, 1, 6.f, 1100, 1250, 420, 1100, true), Victor, Maria, Dimu, Alex;
+    Victor = Maria = Dimu = Alex;
     std::vector<Platforma> platforms = {
         Platforma(0.f, 480.f, 650.f, 20.f, sf::Color{33, 206, 108}),
         Platforma(0.f, 500.f, 650.f, 500.f, sf::Color{107, 31, 31}),
@@ -73,9 +74,13 @@ int main() {
         platform.draw(window);
     }
 
+
+    sf::Time deltaTime = clock.restart();
+    float dt = deltaTime.asSeconds();
+
     Mara.draw(window);
     Cosmin.draw(window);
-
+    Cosmin.walk(dt);
     window.display();
     }
 

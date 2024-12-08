@@ -28,7 +28,7 @@ Comenzi:
 - [x] constructori de inițializare cu parametri
 - [x] pentru o aceeași (singură) clasă: constructor de copiere, `operator=` de copiere, destructor
 <!-- - [x] pentru o altă clasă: constructor de mutare, `operator=` de mutare, destructor -->
-<!-- - [ ] pentru o altă clasă: toate cele 5 funcții membru speciale -->
+<!-- - [x] pentru o altă clasă: toate cele 5 funcții membru speciale -->
 - [x] `operator<<` pentru toate clasele pentru afișare (std::ostream)
 - [x] cât mai multe `const` (unde este cazul)
 - [x] implementarea a minim 3 funcții membru publice pentru funcționalități specifice temei alese, dintre care cel puțin 1-2 funcții mai complexe
@@ -42,7 +42,7 @@ Comenzi:
 ## Tema 2
 
 #### Cerințe
-- [ ] separarea codului din clase în `.h` (sau `.hpp`) și `.cpp`
+- [x] separarea codului din clase în `.h` (sau `.hpp`) și `.cpp`
 - [ ] moșteniri:
   - minim o clasă de bază și **3 clase derivate** din aceeași ierarhie
   - ierarhia trebuie să fie cu bază proprie, nu derivată dintr-o clasă predefinită

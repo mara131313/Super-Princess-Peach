@@ -55,9 +55,7 @@ public:
         return *this;
     }
 
-    ~Personaj() {
-        std::cout << "Personajul a fost eliberat" << std::endl;
-    }
+    ~Personaj() = default;
 
     void attacked(const Enemy& enemy) {
 
