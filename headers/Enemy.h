@@ -10,7 +10,7 @@ private:
     sf::RectangleShape shape;
 
 public:
-    Enemy() : viata(50), atac(50), culoare(1), viteza(20), x1(0), x2(0), y(0), xrn(0), isRight(true) {
+    Enemy() : viata(50), atac(50), culoare(6), viteza(20), x1(0), x2(0), y(0), xrn(0), isRight(true) {
         shape.setSize(sf::Vector2f(40.f, 60.f));
         setShapeColor();
         shape.setPosition(xrn, y);
@@ -40,6 +40,7 @@ public:
             return *this;
         viata = altEnemy.viata;
         atac = altEnemy.atac;
+        culoare = altEnemy.culoare;
         viteza = altEnemy.viteza;
         x1 = altEnemy.x1;
         x2 = altEnemy.x2;
@@ -130,6 +131,10 @@ public:
             }
         }
         shape.setPosition(xrn, y);
+    }
+
+    const sf::RectangleShape& getShape() const {
+        return shape;
     }
 
     ~Enemy() = default;

@@ -18,8 +18,9 @@ int main() {
 
     Personaj Mara(100, 50, 0.8f, 100.f, 400.f);
     //atac foc, atingere;
-    Enemy Cosmin(50, 20, 1, 6.f, 1100, 1250, 420, 1100, true), Victor, Maria, Dimu, Alex;
-    Victor = Maria = Dimu = Alex;
+    Enemy Cosmin(50, 50, 1, 6.f, 1100, 1250, 420, 1100, true), Victor;
+    std::vector<Enemy> enemies = {Cosmin, Victor};
+
     std::vector<Platforma> platforms = {
         Platforma(0.f, 480.f, 650.f, 20.f, sf::Color{33, 206, 108}),
         Platforma(0.f, 500.f, 650.f, 500.f, sf::Color{107, 31, 31}),
@@ -46,14 +47,12 @@ int main() {
                 }
         }
 
-    if (Mara.getShape().getPosition().y > 600.f || Mara.getViata() <= 0) {
-        Mara.GameOver(window);
-    }
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
-        Mara.restart();
-    }
-
+        if ((Mara.getShape().getPosition().y > 600.f || Mara.getViata() <= 0) && !Mara.getIsOver()) {
+            Mara.GameOver(window);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::R) && Mara.getIsOver()) {
+            Mara.restart();
+        }
     window.clear(sf::Color::Cyan);
 
     constexpr float gravity = 0.1f;
@@ -68,19 +67,21 @@ int main() {
         Mara.jump();
     }
 
-    Mara.update(platforms, gravity);
+    sf::Time deltaTime = clock.restart();
+    float dt = deltaTime.asSeconds();
+    Mara.update(platforms, gravity, enemies, window, dt);
 
     for (const auto& platform : platforms) {
         platform.draw(window);
     }
 
-
-    sf::Time deltaTime = clock.restart();
-    float dt = deltaTime.asSeconds();
+    Cosmin.walk(dt);
+    Cosmin.draw(window);
+    Mara.attacked(Cosmin, window);
+    Mara.GameOver(window);
 
     Mara.draw(window);
-    Cosmin.draw(window);
-    Cosmin.walk(dt);
+
     window.display();
     }
 

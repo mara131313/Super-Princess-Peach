@@ -11,14 +11,18 @@ private:
     float viteza, x, y;
     sf::RectangleShape shape;
     sf::Vector2f velocity;
-    bool isOnGround, isJumping, isOver;
+    bool isOnGround, isJumping, isOver, hasDisplayedGameOverMessage = false;
+    sf::Clock clock;
+    sf::Time lastHitTime;
+    const float cooldownDuration = 3.0f;
 
     sf::Font font;
     sf::Text text;
 
 public:
     Personaj(int _viata, int _atac, float _viteza, float _x, float _y) :
-    viata(_viata), atac(_atac), viteza(_viteza), x(_x), y(_y), velocity(0.f, 0.f), isOnGround(false), isJumping(false), isOver(false) {
+    viata(_viata), atac(_atac), viteza(_viteza), x(_x), y(_y), velocity(0.f, 0.f), isOnGround(false), isJumping(false),
+    isOver(false), lastHitTime(sf::Time::Zero) {
         shape.setSize(sf::Vector2f(40.f, 40.f));
         shape.setFillColor(sf::Color::Magenta);
         shape.setPosition(x, y);
@@ -28,7 +32,6 @@ public:
         }
 
         text.setFont(font);
-        text.setString("GAME OVER!!");
         text.setCharacterSize(50);
         text.setFillColor(sf::Color::Red);
         text.setStyle(sf::Text::Bold);
@@ -55,21 +58,56 @@ public:
         return *this;
     }
 
-    ~Personaj() = default;
+    void attacked(const Enemy& enemy, sf::RenderWindow& window) {
+    if (lastHitTime + sf::seconds(cooldownDuration) <= clock.getElapsedTime()) {
 
-    void attacked(const Enemy& enemy) {
+        float MaraStanga = shape.getPosition().x;
+        float MaraDreapta = shape.getPosition().x + shape.getSize().x;
+        float MaraSus = shape.getPosition().y;
+        float MaraJos = shape.getPosition().y + shape.getSize().y;
 
-        viata -= enemy.getAtac();
-        std::cout << "Viata ramasa: " << viata << std::endl;
+        float enemyStanga = enemy.getShape().getPosition().x;
+        float enemyDreapta = enemy.getShape().getPosition().x + enemy.getShape().getSize().x;
+        float enemySus = enemy.getShape().getPosition().y;
+        float enemyJos = enemy.getShape().getPosition().y + enemy.getShape().getSize().y;
+
+        if (MaraDreapta > enemyStanga && MaraStanga < enemyDreapta && MaraJos > enemySus && MaraSus < enemyJos) {
+            viata -= enemy.getAtac();
+            lastHitTime = clock.getElapsedTime();
+            std::cout << "Atacat" << std::endl;
+
+            if (viata <= 0) {
+                GameOver(window);
+            }
+
+            if (MaraDreapta > enemyStanga && MaraStanga < enemyStanga) {
+                shape.setPosition(enemyStanga - shape.getSize().x, shape.getPosition().y);
+            } else if (MaraStanga < enemyDreapta && MaraDreapta > enemyDreapta) {
+                shape.setPosition(enemyDreapta, shape.getPosition().y);
+            }
+
+            if (MaraJos > enemySus && MaraSus < enemySus) {
+                shape.setPosition(shape.getPosition().x, enemySus - shape.getSize().y);
+            } else if (MaraSus < enemyJos && MaraJos > enemyJos) {
+                shape.setPosition(shape.getPosition().x, enemyJos);
+            }
+        }
+    }
+}
+
+    void checkEnemyCollisions(const std::vector<Enemy>& enemies, sf::RenderWindow& window) {
+        for (const auto& enemy : enemies) {
+            attacked(enemy, window);
+        }
     }
 
-    void heal() {
+/*    void heal() {
 
         viata += 50;
         if (viata > 100)
             viata = 100;
         std::cout << "Viata actuala: " << viata << std::endl;
-    }
+    }*/
 
     void updateGround(const std::vector<Platforma>& platforms) {
         isOnGround = false;
@@ -124,14 +162,15 @@ public:
         }
     }
 
-    void update(const std::vector<Platforma>& platforms, float grav) {
+    void update(const std::vector<Platforma>& platforms, float grav, const std::vector<Enemy>& enemies, sf::RenderWindow& window, float deltaTime) {
         if (!isOnGround) {
             velocity.y += grav;
-            if(velocity.y > 5.f)
+            if (velocity.y > 5.f)
                 velocity.y = 5.f;
         }
         shape.move(0, velocity.y);
         updateGround(platforms);
+        checkEnemyCollisions(enemies, window);
     }
 
     void resetJump() {
@@ -147,29 +186,37 @@ public:
         return viata;
     }
 
+    int getIsOver() const {
+        return isOver;
+    }
+
     void GameOver(sf::RenderWindow& window)  {
-        if (!isOver)
-        {
-            std::cout << "Ai murit! Apasa tasta R pentru a reincepe jocul." << std::endl;
+        if (!isOver) {
+            text.setString("GAME OVER!!");
             window.draw(text);
+            std::cout << "Ai murit! Apasa tasta R pentru a reincepe jocul." << std::endl;
             isOver = true;
         }
     }
 
+
     void restart() {
-        if(isOver) {
-            isOver = false;
-            shape.setSize(sf::Vector2f(40.f, 40.f));
-            shape.setFillColor(sf::Color::Magenta);
-            shape.setPosition(x, y);
-            std::cout << "Ai reinceput jocul!" << std::endl;
-            viata = 100;
-        }
+        isOver = false;
+        shape.setSize(sf::Vector2f(40.f, 40.f));
+        shape.setFillColor(sf::Color::Magenta);
+        shape.setPosition(x, y);
+        viata = 100;
+        text.setString("");
+        std::cout << "Ai reinceput jocul!" << std::endl;
     }
+
+
 
     void draw(sf::RenderWindow& window) const {
         window.draw(shape);
     }
+
+    ~Personaj() = default;
 
     friend std::ostream& operator<<(std::ostream& os, const Personaj& p) {
         os << "Viata personajului: " << p.viata;
