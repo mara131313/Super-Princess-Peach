@@ -116,7 +116,7 @@ public:
         window.draw(shape);
     }
 
-    void walk(float deltaTime) {
+    void walk(const float deltaTime) {
         if (isRight) {
             xrn += viteza * 4 * deltaTime;
             if (xrn >= x2) {

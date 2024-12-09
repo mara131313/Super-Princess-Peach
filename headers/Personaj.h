@@ -162,7 +162,7 @@ public:
         }
     }
 
-    void update(const std::vector<Platforma>& platforms, float grav, const std::vector<Enemy>& enemies, sf::RenderWindow& window, float deltaTime) {
+    void update(const std::vector<Platforma>& platforms, float grav, const Enemy& enemy, sf::RenderWindow& window) {
         if (!isOnGround) {
             velocity.y += grav;
             if (velocity.y > 5.f)
@@ -170,7 +170,8 @@ public:
         }
         shape.move(0, velocity.y);
         updateGround(platforms);
-        checkEnemyCollisions(enemies, window);
+        attacked(enemy, window);
+        //checkEnemyCollisions(enemies, window);
     }
 
     void resetJump() {

@@ -69,7 +69,7 @@ int main() {
 
     sf::Time deltaTime = clock.restart();
     float dt = deltaTime.asSeconds();
-    Mara.update(platforms, gravity, enemies, window, dt);
+    Mara.update(platforms, gravity, Cosmin, window);
 
     for (const auto& platform : platforms) {
         platform.draw(window);
