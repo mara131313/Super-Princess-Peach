@@ -18,12 +18,13 @@ int main() {
 
     Personaj Mara(100, 50, 0.8f, 100.f, 400.f);
     //atac foc, atingere;
-    Enemy Cosmin(50, 50, 1, 6.f, 1100, 1250, 420, 1100, true), Victor;
+    Enemy Cosmin(50, 50, 1, 6.f, 1100, 1250, 420, 1100, true),
+    Victor(50, 50, 2, 6.f, 1250, 1400, 220, 1250, true);
     std::vector<Enemy> enemies = {Cosmin, Victor};
 
     std::vector<Platforma> platforms = {
         Platforma(0.f, 480.f, 650.f, 20.f, sf::Color{33, 206, 108}),
-        Platforma(0.f, 500.f, 650.f, 500.f, sf::Color{107, 31, 31}),
+        Platforma(0.f, 500.f, 650.f, 100.f, sf::Color{107, 31, 31}),
 
         Platforma(800.f, 480.f, 100.f, 20.f, sf::Color{33, 206, 108}),
         Platforma(800.f, 500.f, 100.f, 100.f, sf::Color{107, 31, 31}),
@@ -31,8 +32,11 @@ int main() {
         Platforma(1050.f, 480.f, 450.f, 20.f, sf::Color{33, 206, 108}),
         Platforma(1050.f, 500.f, 450.f, 100.f, sf::Color{107, 31, 31}),
 
-        Platforma(550.f, 330.f, 50.f, 20.f, sf::Color{33, 206, 108}),
-        Platforma(550.f, 350.f, 50.f, 30.f, sf::Color{107, 31, 31})
+        Platforma(1200.f, 280.f, 250.f, 20.f, sf::Color{33, 206, 108}),
+        Platforma(1200.f, 300.f, 250.f, 50.f, sf::Color{107, 31, 31}),
+
+        Platforma(250.f, 280.f, 100.f, 20.f, sf::Color{33, 206, 108}),
+        Platforma(250.f, 300.f, 100.f, 50.f, sf::Color{107, 31, 31})
     };
 
     sf::Event event = {};
@@ -67,7 +71,7 @@ int main() {
         Mara.jump();
     }
 
-    Mara.update(platforms, gravity, Cosmin, window);
+    Mara.update(platforms, gravity, enemies, window);
 
     for (const auto& platform : platforms) {
         platform.draw(window);
@@ -78,6 +82,8 @@ int main() {
     float dt = deltaTime.asSeconds();
     Cosmin.walk(dt);
     Cosmin.draw(window);
+    Victor.draw(window);
+    Victor.walk(dt);
     Mara.attacked(Cosmin, window);
     Mara.GameOver(window);
 

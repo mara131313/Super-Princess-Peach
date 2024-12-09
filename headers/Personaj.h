@@ -162,7 +162,7 @@ public:
         }
     }
 
-    void update(const std::vector<Platforma>& platforms, float grav, const Enemy& enemy, sf::RenderWindow& window) {
+    void update(const std::vector<Platforma>& platforms, float grav, const std::vector<Enemy>& enemies, sf::RenderWindow& window) {
         if (!isOnGround) {
             velocity.y += grav;
             if (velocity.y > 5.f)
@@ -170,8 +170,8 @@ public:
         }
         shape.move(0, velocity.y);
         updateGround(platforms);
-        attacked(enemy, window);
-        //checkEnemyCollisions(enemies, window);
+        //attacked(enemy, window);
+        checkEnemyCollisions(enemies, window);
     }
 
     void resetJump() {
@@ -193,13 +193,12 @@ public:
 
     void GameOver(sf::RenderWindow& window)  {
         if (!isOver) {
-            text.setString("GAME OVER!!");
             window.draw(text);
             std::cout << "Ai murit! Apasa tasta R pentru a reincepe jocul." << std::endl;
             isOver = true;
         }
+        text.setString("GAME OVER!!");
     }
-
 
     void restart() {
         isOver = false;
@@ -210,8 +209,6 @@ public:
         text.setString("");
         std::cout << "Ai reinceput jocul!" << std::endl;
     }
-
-
 
     void draw(sf::RenderWindow& window) const {
         window.draw(shape);
