@@ -18,7 +18,7 @@ int main() {
 
     Personaj Mara(100, 50, 0.8f, 100.f, 400.f);
     //atac foc, atingere;
-    Enemy Cosmin(50, 50, 1, 6.f, 1100, 1250, 420, 1100, true),
+    Enemy Cosmin(50, 50, 1, 6.f, 1100, 1350, 420, 1100, true),
     Victor(50, 50, 2, 6.f, 1250, 1400, 220, 1250, true);
     std::vector<Enemy> enemies = {Cosmin, Victor};
 

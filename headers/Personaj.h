@@ -60,21 +60,20 @@ public:
 
     void attacked(const Enemy& enemy, sf::RenderWindow& window) {
     if (lastHitTime + sf::seconds(cooldownDuration) <= clock.getElapsedTime()) {
+        const float MaraStanga = shape.getPosition().x;
+        const float MaraDreapta = shape.getPosition().x + shape.getSize().x;
+        const float MaraSus = shape.getPosition().y;
+        const float MaraJos = shape.getPosition().y + shape.getSize().y;
 
-        float MaraStanga = shape.getPosition().x;
-        float MaraDreapta = shape.getPosition().x + shape.getSize().x;
-        float MaraSus = shape.getPosition().y;
-        float MaraJos = shape.getPosition().y + shape.getSize().y;
-
-        float enemyStanga = enemy.getShape().getPosition().x;
-        float enemyDreapta = enemy.getShape().getPosition().x + enemy.getShape().getSize().x;
+        const float enemyStanga = enemy.getShape().getPosition().x;
+        const float enemyDreapta = enemy.getShape().getPosition().x + enemy.getShape().getSize().x;
         float enemySus = enemy.getShape().getPosition().y;
         float enemyJos = enemy.getShape().getPosition().y + enemy.getShape().getSize().y;
 
-        if (MaraDreapta > enemyStanga && MaraStanga < enemyDreapta && MaraJos > enemySus && MaraSus < enemyJos) {
+        if (MaraDreapta > enemyStanga && MaraStanga < enemyDreapta && MaraJos > enemySus && MaraSus < enemyJos && viata) {
             viata -= enemy.getAtac();
             lastHitTime = clock.getElapsedTime();
-            std::cout << "Atacat" << std::endl;
+            std::cout << "Atacat! Viata ramasa: " << viata << std::endl;
 
             if (viata <= 0) {
                 GameOver(window);
@@ -162,7 +161,7 @@ public:
         }
     }
 
-    void update(const std::vector<Platforma>& platforms, float grav, const std::vector<Enemy>& enemies, sf::RenderWindow& window) {
+    void update(const std::vector<Platforma>& platforms, const float grav, const std::vector<Enemy>& enemies, sf::RenderWindow& window) {
         if (!isOnGround) {
             velocity.y += grav;
             if (velocity.y > 5.f)
