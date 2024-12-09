@@ -11,7 +11,7 @@ private:
     float viteza, x, y;
     sf::RectangleShape shape;
     sf::Vector2f velocity;
-    bool isOnGround, isJumping, isOver, hasDisplayedGameOverMessage = false;
+    bool isOnGround, isJumping, isOver;
     sf::Clock clock;
     sf::Time lastHitTime;
     const float cooldownDuration = 3.0f;

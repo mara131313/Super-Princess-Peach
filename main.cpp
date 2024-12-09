@@ -67,14 +67,15 @@ int main() {
         Mara.jump();
     }
 
-    sf::Time deltaTime = clock.restart();
-    float dt = deltaTime.asSeconds();
     Mara.update(platforms, gravity, Cosmin, window);
 
     for (const auto& platform : platforms) {
         platform.draw(window);
     }
 
+
+    sf::Time deltaTime = clock.restart();
+    float dt = deltaTime.asSeconds();
     Cosmin.walk(dt);
     Cosmin.draw(window);
     Mara.attacked(Cosmin, window);
