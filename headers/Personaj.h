@@ -32,10 +32,10 @@ public:
         }
 
         text.setFont(font);
-        text.setCharacterSize(50);
+        text.setCharacterSize(80);
         text.setFillColor(sf::Color::Red);
         text.setStyle(sf::Text::Bold);
-        text.setPosition(600.f, 300.f);
+        text.setPosition(100.f, 100.f);
     }
 
     Personaj(const Personaj& altPers) :
@@ -192,20 +192,17 @@ public:
     }
 
     void GameOver(sf::RenderWindow& window)  {
-        if (!isOver) {
+        text.setString("GAME OVER!! PRESS R TO RESTART");
             window.draw(text);
-            std::cout << "Ai murit! Apasa tasta R pentru a reincepe jocul." << std::endl;
             isOver = true;
-        }
-        text.setString("GAME OVER!!");
     }
 
     void restart() {
+        viata = 100;
         isOver = false;
         shape.setSize(sf::Vector2f(40.f, 40.f));
         shape.setFillColor(sf::Color::Magenta);
         shape.setPosition(x, y);
-        viata = 100;
         text.setString("");
         std::cout << "Ai reinceput jocul!" << std::endl;
     }

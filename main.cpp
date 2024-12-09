@@ -85,8 +85,9 @@ int main() {
     Victor.draw(window);
     Victor.walk(dt);
     Mara.attacked(Cosmin, window);
-    Mara.GameOver(window);
-
+    if (Mara.getIsOver()) {
+        Mara.GameOver(window);
+    }
     Mara.draw(window);
 
     window.display();
