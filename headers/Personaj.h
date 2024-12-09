@@ -70,23 +70,24 @@ public:
         float enemySus = enemy.getShape().getPosition().y;
         float enemyJos = enemy.getShape().getPosition().y + enemy.getShape().getSize().y;
 
+        if (!viata) {
+            GameOver(window);
+            shape.move(-10, -10);
+        }
+
         if (MaraDreapta > enemyStanga && MaraStanga < enemyDreapta && MaraJos > enemySus && MaraSus < enemyJos && viata) {
             viata -= enemy.getAtac();
             lastHitTime = clock.getElapsedTime();
-            std::cout << "Atacat! Viata ramasa: " << viata << std::endl;
-
-            if (viata <= 0) {
-                GameOver(window);
-            }
+            std::cout << "Ai fost atacat! Viata ramasa: " << viata << std::endl;
 
             if (MaraDreapta > enemyStanga && MaraStanga < enemyStanga) {
-                shape.setPosition(enemyStanga - shape.getSize().x, shape.getPosition().y);
-            } else if (MaraStanga < enemyDreapta && MaraDreapta > enemyDreapta) {
-                shape.setPosition(enemyDreapta, shape.getPosition().y);
+                shape.move(-shape.getSize().x, 0.f);
+            }if (MaraStanga < enemyDreapta && MaraDreapta > enemyDreapta) {
+                shape.move(shape.getSize().x, 0.f);
             }
 
             if (MaraJos > enemySus && MaraSus < enemySus) {
-                shape.setPosition(shape.getPosition().x, enemySus - shape.getSize().y);
+                shape.move(shape.getPosition().x, enemySus - shape.getSize().y);
             } else if (MaraSus < enemyJos && MaraJos > enemyJos) {
                 shape.setPosition(shape.getPosition().x, enemyJos);
             }
