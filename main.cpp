@@ -19,25 +19,39 @@ int main() {
     Personaj Mara(100, 0.8f, 100.f, 400.f);
     //atac foc, atingere;
     Enemy Cosmin(50, 50, 1, 6.f, 1100, 1350, 420, 420, 1100, 420, true, true),
-    Victor(50, 50, 2, 6.f, 1250, 1400, 240, 240, 1250, 240, true, true);
+    Victor(50, 50, 4, 6.f, 1250, 1400, 240, 240, 1250, 240, true, true);
+    std::vector<Enemy*> enemies_pt = {&Cosmin, &Victor};
     std::vector<Enemy> enemies = {Cosmin, Victor};
 
     std::vector<Platforma> platforms = {
+        //stanga jos
         Platforma(0.f, 480.f, 650.f, 20.f, sf::Color{33, 206, 108}),
         Platforma(0.f, 500.f, 650.f, 100.f, sf::Color{107, 31, 31}),
 
+        //mijloc jos
         Platforma(800.f, 480.f, 100.f, 20.f, sf::Color{33, 206, 108}),
         Platforma(800.f, 500.f, 100.f, 100.f, sf::Color{107, 31, 31}),
 
+        //dreapta jos
         Platforma(1050.f, 480.f, 450.f, 20.f, sf::Color{33, 206, 108}),
         Platforma(1050.f, 500.f, 450.f, 100.f, sf::Color{107, 31, 31}),
 
+        //dreapta sus
         Platforma(1200.f, 300.f, 250.f, 20.f, sf::Color{33, 206, 108}),
         Platforma(1200.f, 320.f, 250.f, 50.f, sf::Color{107, 31, 31}),
 
+        //stanga sus
         Platforma(250.f, 300.f, 100.f, 20.f, sf::Color{33, 206, 108}),
-        Platforma(250.f, 320.f, 100.f, 50.f, sf::Color{107, 31, 31})
+        Platforma(250.f, 320.f, 100.f, 50.f, sf::Color{107, 31, 31}),
+
+        //mijloc sus
+        Platforma(450.f, 180.f, 600.f, 20.f, sf::Color{33, 206, 108}),
+        Platforma(450, 200.f,600.f, 50.f, sf::Color{107, 31, 31})
     };
+
+    std::cout << Mara << std::endl;
+    std::cout << "Cosmin " << Cosmin << std::endl;
+    std::cout << "Victor " << Victor << std::endl;
 
     sf::Event event = {};
 
@@ -80,17 +94,36 @@ int main() {
 
     sf::Time deltaTime = clock.restart();
     float dt = deltaTime.asSeconds();
-    Cosmin.walk(dt);
-    Cosmin.draw(window);
-    Victor.draw(window);
-    Victor.walk(dt);
-    Mara.attacked(Cosmin, window);
-    Mara.attacked(Victor, window);
-    Mara.kill(Cosmin);
-    Mara.kill(Victor);
+    int cnt = 2;
+    for (auto* enemy : enemies_pt) {
+        enemy->walk(dt);
+        enemy->draw(window);
+        Mara.attacked(*enemy, window);
+        Mara.kill(*enemy);
+    }
+
+    for (const auto& enemy : enemies) {
+        if (!enemy.getIsAlive()) {
+            cnt--;
+        }
+    }
+
     if (Mara.getIsOver()) {
         Mara.GameOver(window);
     }
+
+    if ( !cnt ) {
+        sf::Font font;
+        sf::Text win;
+
+        win.setFont(font);
+        win.setCharacterSize(80);
+        win.setFillColor(sf::Color::Black);
+        win.setStyle(sf::Text::Bold);
+        win.setPosition(100.f, 100.f);
+        win.setString("T O P !! AI CASTIGAT");
+    }
+
     Mara.draw(window);
 
     window.display();

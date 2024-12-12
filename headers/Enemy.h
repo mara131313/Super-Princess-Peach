@@ -175,6 +175,10 @@ public:
         shape.setPosition(1600, 800);
     }
 
+    bool getIsAlive() const {
+        return isAlive;
+    }
+
     const sf::RectangleShape& getShape() const {
         return shape;
     }
@@ -182,7 +186,7 @@ public:
     ~Enemy() = default;
 
     friend std::ostream& operator<<(std::ostream& os, const Enemy& enemy) {
-        os<< "ataca cu : " << enemy.atac<< "damage.";
+        os<< "ataca cu : " << enemy.atac<< " damage.";
         return os;
     }
 };

@@ -18,7 +18,7 @@ private:
     const float cooldownDuration = 3.0f;
 
     sf::Font font;
-    sf::Text text;
+    sf::Text lose;
 
 public:
     Personaj(int _viata, float _viteza, float _x, float _y) :
@@ -32,11 +32,11 @@ public:
             std::cerr << "Eroare la incarcarea fontului!" << std::endl;
         }
 
-        text.setFont(font);
-        text.setCharacterSize(80);
-        text.setFillColor(sf::Color::Red);
-        text.setStyle(sf::Text::Bold);
-        text.setPosition(100.f, 100.f);
+        lose.setFont(font);
+        lose.setCharacterSize(80);
+        lose.setFillColor(sf::Color::Red);
+        lose.setStyle(sf::Text::Bold);
+        lose.setPosition(100.f, 100.f);
     }
 
     Personaj(const Personaj& altPers) :
@@ -79,7 +79,7 @@ public:
             && !(MaraJos <= enemySus + 5 && MaraJos >= enemySus - 5)) {
             viata -= enemy.getAtac();
             lastHitTime = clock.getElapsedTime();
-            std::cout << "Ai fost atacat! Viata ramasa: " << viata << std::endl;
+            std::cout << "Ai fost atacat! Viata ramasa: " << viata << std::endl << "Esti invincibil 3 secunde!" << std::endl;
 
             if (MaraDreapta > enemyStanga && MaraStanga < enemyStanga) {
                 shape.move(-shape.getSize().x, 0.f);
@@ -117,14 +117,6 @@ public:
             attacked(enemy, window);
         }
     }
-
-/*    void heal() {
-
-        viata += 50;
-        if (viata > 100)
-            viata = 100;
-        std::cout << "Viata actuala: " << viata << std::endl;
-    }*/
 
     void updateGround(const std::vector<Platforma>& platforms) {
         isOnGround = false;
@@ -208,8 +200,8 @@ public:
     }
 
     void GameOver(sf::RenderWindow& window)  {
-        text.setString("GAME OVER!! PRESS R TO RESTART");
-            window.draw(text);
+        lose.setString("GAME OVER!! PRESS R TO RESTART");
+            window.draw(lose);
             isOver = true;
     }
 
@@ -219,7 +211,7 @@ public:
         shape.setSize(sf::Vector2f(40.f, 40.f));
         shape.setFillColor(sf::Color::Magenta);
         shape.setPosition(x, y);
-        text.setString("");
+        lose.setString("");
         std::cout << "Ai reinceput jocul!" << std::endl;
     }
 
