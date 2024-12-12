@@ -5,22 +5,24 @@
 class Enemy {
 private:
     int viata, atac, culoare;
-    float viteza, x1, x2, y, xrn;
-    bool isRight;
+    float viteza, x1, x2, y1, y2, xrn, yrn;
+    bool isRight, isDown, isAlive = true;
     sf::RectangleShape shape;
 
 public:
-    Enemy() : viata(50), atac(50), culoare(6), viteza(20), x1(0), x2(0), y(0), xrn(0), isRight(true) {
+    Enemy() : viata(50), atac(50), culoare(6), viteza(0.8f), x1(0), x2(0), y1(0), y2(0), xrn(0), yrn(0), isRight(true), isDown(true) {
         shape.setSize(sf::Vector2f(40.f, 60.f));
         setShapeColor();
-        shape.setPosition(xrn, y);
+        shape.setPosition(xrn, yrn);
     }
 
-    Enemy(int _viata, int _atac, int _culoare, float _viteza, float _x1, float _x2, float _y, float _xrn, bool _isRight) :
-        viata(_viata), atac(_atac), culoare(_culoare), viteza(_viteza), x1(_x1), x2(_x2), y(_y), xrn(_xrn), isRight(_isRight) {
+    Enemy(int _viata, int _atac, int _culoare, float _viteza, float _x1, float _x2, float _y1,
+        float _y2, float _xrn, float _yrn, bool _isRight, bool _isDown) :
+        viata(_viata), atac(_atac), culoare(_culoare), viteza(_viteza), x1(_x1), x2(_x2), y1(_y1),
+        y2(_y2), xrn(_xrn), yrn(_yrn), isRight(_isRight), isDown(_isDown) {
         shape.setSize(sf::Vector2f(40.f, 60.f));
         setShapeColor();
-        shape.setPosition(xrn, y);
+        shape.setPosition(xrn, yrn);
     }
 
     Enemy(const Enemy& altEnemies) {
@@ -30,9 +32,12 @@ public:
         viteza = altEnemies.viteza;
         x1 = altEnemies.x1;
         x2 = altEnemies.x2;
-        y = altEnemies.y;
+        y1 = altEnemies.y1;
+        y2 = altEnemies.y2;
         xrn = altEnemies.xrn;
+        yrn = altEnemies.yrn;
         isRight = altEnemies.isRight;
+        isDown = altEnemies.isDown;
     }
 
     Enemy& operator=(const Enemy& altEnemy) {
@@ -44,23 +49,30 @@ public:
         viteza = altEnemy.viteza;
         x1 = altEnemy.x1;
         x2 = altEnemy.x2;
-        y = altEnemy.y;
+        y1 = altEnemy.y1;
+        y2 = altEnemy.y2;
         xrn = altEnemy.xrn;
+        yrn = altEnemy.yrn;
         isRight = altEnemy.isRight;
+        isDown = altEnemy.isDown;
         return *this;
     }
 
     Enemy(Enemy&& altEnemy) noexcept :
     viata(altEnemy.viata), atac(altEnemy.atac), culoare(altEnemy.culoare), viteza(altEnemy.viteza), x1(altEnemy.x1),
-    x2(altEnemy.x2), y(altEnemy.y), xrn(altEnemy.xrn), isRight(altEnemy.isRight), shape(std::move(altEnemy.shape)) {
+    x2(altEnemy.x2), y1(altEnemy.y1), y2(altEnemy.y2), xrn(altEnemy.xrn), yrn(altEnemy.yrn),
+    isRight(altEnemy.isRight), isDown(altEnemy.isDown), shape(std::move(altEnemy.shape)) {
         altEnemy.viata = 0;
         altEnemy.atac = 0;
         altEnemy.viteza = 0;
         altEnemy.x1 = 0;
         altEnemy.x2 = 0;
-        altEnemy.y = 0;
+        altEnemy.y1 = 0;
+        altEnemy.y2 = 0;
         altEnemy.xrn = 0;
+        altEnemy.yrn = 0;
         altEnemy.isRight = true;
+        altEnemy.isDown = true;
         std::cout << "Enemy mutat!" << std::endl;
     }
 
@@ -73,9 +85,12 @@ public:
         viteza = altEnemy.viteza;
         x1 = altEnemy.x1;
         x2 = altEnemy.x2;
-        y = altEnemy.y;
+        y1 = altEnemy.y1;
+        y2 = altEnemy.y2;
         xrn = altEnemy.xrn;
+        yrn = altEnemy.yrn;
         isRight = altEnemy.isRight;
+        isDown = altEnemy.isDown;
         shape = std::move(altEnemy.shape);
 
         altEnemy.viata = 0;
@@ -83,9 +98,12 @@ public:
         altEnemy.viteza = 0;
         altEnemy.x1 = 0;
         altEnemy.x2 = 0;
-        altEnemy.y = 0;
+        altEnemy.y1 = 0;
+        altEnemy.y2 = 0;
         altEnemy.xrn = 0;
+        altEnemy.yrn = 0;
         altEnemy.isRight = true;
+        altEnemy.isDown = true;
         std::cout << "Enemy atribuit prin mutare!" << std::endl;
 
         return *this;
@@ -117,20 +135,44 @@ public:
     }
 
     void walk(const float deltaTime) {
-        if (isRight) {
-            xrn += viteza * 4 * deltaTime;
-            if (xrn >= x2) {
-                xrn = x2;
-                isRight = false;
+        if (y1 == y2 && isAlive) {
+            if (isRight) {
+                xrn += viteza * 4 * deltaTime;
+                if (xrn >= x2) {
+                    xrn = x2;
+                    isRight = false;
+                }
+            } else {
+                xrn -= viteza * 4 * deltaTime;
+                if (xrn <= x1) {
+                    xrn = x1;
+                    isRight = true;
+                }
             }
-        } else {
-            xrn -= viteza * 4 * deltaTime;
-            if (xrn <= x1) {
-                xrn = x1;
-                isRight = true;
-            }
+            shape.setPosition(xrn, y1);
         }
-        shape.setPosition(xrn, y);
+        if (x1 == x2 && isAlive) {
+            if(isDown) {
+                yrn += viteza * 4 * deltaTime;
+                if (yrn >= y2) {
+                    yrn = y2;
+                    isDown = false;
+                }
+            } else {
+                yrn -= viteza * 4 * deltaTime;
+                if (yrn <= y1) {
+                    yrn = y1;
+                    isDown = true;
+                }
+            }
+            shape.setPosition(x1, yrn);
+        }
+    }
+
+    void die() {
+        viata = 0;
+        isAlive = false;
+        shape.setPosition(1600, 800);
     }
 
     const sf::RectangleShape& getShape() const {

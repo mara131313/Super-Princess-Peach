@@ -2,8 +2,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include "headers/Platforma.h"
-#include "headers/Enemy.h"
 #include "headers/Personaj.h"
+#include "headers/Enemy.h"
 // #include "headers/atac.h"
 
 int main() {
@@ -16,10 +16,10 @@ int main() {
 
     sf::RenderWindow window(sf::VideoMode(1500, 600), "Super Princess Peach", sf::Style::Default, settings);
 
-    Personaj Mara(100, 50, 0.8f, 100.f, 400.f);
+    Personaj Mara(100, 0.8f, 100.f, 400.f);
     //atac foc, atingere;
-    Enemy Cosmin(50, 50, 1, 6.f, 1100, 1350, 420, 1100, true),
-    Victor(50, 50, 2, 6.f, 1250, 1400, 220, 1250, true);
+    Enemy Cosmin(50, 50, 1, 6.f, 1100, 1350, 420, 420, 1100, 420, true, true),
+    Victor(50, 50, 2, 6.f, 1250, 1400, 240, 240, 1250, 240, true, true);
     std::vector<Enemy> enemies = {Cosmin, Victor};
 
     std::vector<Platforma> platforms = {
@@ -32,11 +32,11 @@ int main() {
         Platforma(1050.f, 480.f, 450.f, 20.f, sf::Color{33, 206, 108}),
         Platforma(1050.f, 500.f, 450.f, 100.f, sf::Color{107, 31, 31}),
 
-        Platforma(1200.f, 280.f, 250.f, 20.f, sf::Color{33, 206, 108}),
-        Platforma(1200.f, 300.f, 250.f, 50.f, sf::Color{107, 31, 31}),
+        Platforma(1200.f, 300.f, 250.f, 20.f, sf::Color{33, 206, 108}),
+        Platforma(1200.f, 320.f, 250.f, 50.f, sf::Color{107, 31, 31}),
 
-        Platforma(250.f, 280.f, 100.f, 20.f, sf::Color{33, 206, 108}),
-        Platforma(250.f, 300.f, 100.f, 50.f, sf::Color{107, 31, 31})
+        Platforma(250.f, 300.f, 100.f, 20.f, sf::Color{33, 206, 108}),
+        Platforma(250.f, 320.f, 100.f, 50.f, sf::Color{107, 31, 31})
     };
 
     sf::Event event = {};
@@ -85,6 +85,9 @@ int main() {
     Victor.draw(window);
     Victor.walk(dt);
     Mara.attacked(Cosmin, window);
+    Mara.attacked(Victor, window);
+    Mara.kill(Cosmin);
+    Mara.kill(Victor);
     if (Mara.getIsOver()) {
         Mara.GameOver(window);
     }

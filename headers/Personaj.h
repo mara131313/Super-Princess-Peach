@@ -2,12 +2,13 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include "Platforma.h"
+
 #include "Enemy.h"
+#include "Platforma.h"
 
 class Personaj {
 private:
-    int viata, atac;
+    int viata;
     float viteza, x, y;
     sf::RectangleShape shape;
     sf::Vector2f velocity;
@@ -20,8 +21,8 @@ private:
     sf::Text text;
 
 public:
-    Personaj(int _viata, int _atac, float _viteza, float _x, float _y) :
-    viata(_viata), atac(_atac), viteza(_viteza), x(_x), y(_y), velocity(0.f, 0.f), isOnGround(false), isJumping(false),
+    Personaj(int _viata, float _viteza, float _x, float _y) :
+    viata(_viata), viteza(_viteza), x(_x), y(_y), velocity(0.f, 0.f), isOnGround(false), isJumping(false),
     isOver(false), lastHitTime(sf::Time::Zero) {
         shape.setSize(sf::Vector2f(40.f, 40.f));
         shape.setFillColor(sf::Color::Magenta);
@@ -39,14 +40,13 @@ public:
     }
 
     Personaj(const Personaj& altPers) :
-    viata(altPers.viata), atac(altPers.atac), viteza(altPers.viteza), x(altPers.x), y(altPers.y), shape(altPers.shape),
+    viata(altPers.viata), viteza(altPers.viteza), x(altPers.x), y(altPers.y), shape(altPers.shape),
     velocity(altPers.velocity), isOnGround(altPers.isOnGround), isJumping(altPers.isJumping), isOver(altPers.isOver) {}
 
     Personaj& operator = (const Personaj& altPers) {
         if (this == &altPers)
             return *this;
         viata = altPers.viata;
-        atac = altPers.atac;
         viteza = altPers.viteza;
         x = altPers.x;
         y = altPers.y;
@@ -67,15 +67,16 @@ public:
 
         const float enemyStanga = enemy.getShape().getPosition().x;
         const float enemyDreapta = enemy.getShape().getPosition().x + enemy.getShape().getSize().x;
-        float enemySus = enemy.getShape().getPosition().y;
-        float enemyJos = enemy.getShape().getPosition().y + enemy.getShape().getSize().y;
+        const float enemySus = enemy.getShape().getPosition().y;
+        const float enemyJos = enemy.getShape().getPosition().y + enemy.getShape().getSize().y;
 
         if (!viata) {
             GameOver(window);
             shape.move(-10, -10);
         }
 
-        if (MaraDreapta > enemyStanga && MaraStanga < enemyDreapta && MaraJos > enemySus && MaraSus < enemyJos && viata) {
+        if (MaraDreapta > enemyStanga && MaraStanga < enemyDreapta && MaraJos > enemySus && MaraSus < enemyJos && viata
+            && !(MaraJos <= enemySus + 5 && MaraJos >= enemySus - 5)) {
             viata -= enemy.getAtac();
             lastHitTime = clock.getElapsedTime();
             std::cout << "Ai fost atacat! Viata ramasa: " << viata << std::endl;
@@ -94,6 +95,22 @@ public:
         }
     }
 }
+
+    void kill(Enemy& enemy) const {
+        const float MaraStanga = shape.getPosition().x;
+        const float MaraDreapta = shape.getPosition().x + shape.getSize().x;
+        const float MaraJos = shape.getPosition().y + shape.getSize().y;
+
+        const float enemyStanga = enemy.getShape().getPosition().x;
+        const float enemyDreapta = enemy.getShape().getPosition().x + enemy.getShape().getSize().x;
+        const float enemySus = enemy.getShape().getPosition().y;
+
+        if (MaraDreapta > enemyStanga && MaraStanga < enemyDreapta &&
+            MaraJos <= enemySus + 5 && MaraJos >= enemySus - 5) {
+            enemy.die();
+            std::cout << "Inamicul a fost omorat!" << std::endl;
+            }
+    }
 
     void checkEnemyCollisions(const std::vector<Enemy>& enemies, sf::RenderWindow& window) {
         for (const auto& enemy : enemies) {
@@ -170,7 +187,6 @@ public:
         }
         shape.move(0, velocity.y);
         updateGround(platforms);
-        //attacked(enemy, window);
         checkEnemyCollisions(enemies, window);
     }
 
