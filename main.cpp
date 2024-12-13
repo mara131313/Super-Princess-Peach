@@ -1,4 +1,5 @@
 #include <vector>
+#include <tuple>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include "headers/Platforma.h"
@@ -19,9 +20,12 @@ int main() {
     Personaj Mara(100, 0.8f, 100.f, 400.f);
     //atac foc, atingere;
     Enemy Cosmin(50, 50, 1, 6.f, 1100, 1350, 420, 420, 1100, 420, true, true),
-    Victor(50, 50, 4, 6.f, 1250, 1400, 240, 240, 1250, 240, true, true);
-    std::vector<Enemy*> enemies_pt = {&Cosmin, &Victor};
-    std::vector<Enemy> enemies = {Cosmin, Victor};
+    Victor(50, 50, 4, 6.f, 1250, 1400, 240, 240, 1250, 240, true, true), Dimu;
+    Dimu = Victor;
+    Dimu.setPozi(650, 950, 120, 120);
+
+    std::vector enemies_pt = {&Cosmin, &Victor, &Dimu};
+    std::vector enemies = {Cosmin, Victor, Dimu};
 
     std::vector<Platforma> platforms = {
         //stanga jos
@@ -52,6 +56,7 @@ int main() {
     std::cout << Mara << std::endl;
     std::cout << "Cosmin " << Cosmin << std::endl;
     std::cout << "Victor " << Victor << std::endl;
+    std::cout << "Dimu " << Dimu << std::endl;
 
     sf::Event event = {};
 
@@ -70,6 +75,17 @@ int main() {
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::R) && Mara.getIsOver()) {
             Mara.restart();
+            std::vector<std::tuple<float, float, float, float>> initialPositions = {
+                {1100, 1350, 420, 420},
+                {1250, 1400, 240, 240},
+                {650, 950, 120, 120}
+            };
+            int i = 0;
+            for (auto& enemy : enemies_pt) {
+                auto [x1, x2, y1, y2] = initialPositions[i++];
+                enemy->setPozi(x1, x2, y1, y2);
+                enemy->reset();
+            }
         }
     window.clear(sf::Color::Cyan);
 
@@ -91,20 +107,17 @@ int main() {
         platform.draw(window);
     }
 
-
     sf::Time deltaTime = clock.restart();
     float dt = deltaTime.asSeconds();
-    int cnt = 2;
-    for (auto* enemy : enemies_pt) {
-        enemy->walk(dt);
-        enemy->draw(window);
-        Mara.attacked(*enemy, window);
-        Mara.kill(*enemy);
-    }
-
-    for (const auto& enemy : enemies) {
-        if (!enemy.getIsAlive()) {
-            cnt--;
+    for (auto it = enemies_pt.begin(); it != enemies_pt.end(); ) {
+        if (!(*it)->getIsAlive()) {
+            it = enemies_pt.erase(it);
+        } else {
+            (*it)->walk(dt);
+            (*it)->draw(window);
+            Mara.attacked(**it, window);
+            Mara.kill(**it);
+            ++it;
         }
     }
 
@@ -112,9 +125,13 @@ int main() {
         Mara.GameOver(window);
     }
 
-    if ( !cnt ) {
+    if ( enemies.empty() ) {
         sf::Font font;
         sf::Text win;
+
+        if (!font.loadFromFile("../fonts/VomitoCartoon.ttf")) {
+            std::cerr << "Eroare la incarcarea fontului!" << std::endl;
+        }
 
         win.setFont(font);
         win.setCharacterSize(80);
@@ -122,6 +139,7 @@ int main() {
         win.setStyle(sf::Text::Bold);
         win.setPosition(100.f, 100.f);
         win.setString("T O P !! AI CASTIGAT");
+        window.draw(win);
     }
 
     Mara.draw(window);

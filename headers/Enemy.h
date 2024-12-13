@@ -179,6 +179,19 @@ public:
         return isAlive;
     }
 
+    void setPozi(const float a, const float b, const float c, const float d) {
+        x1 = a;
+        x2 = b;
+        y1 = c;
+        y2 = d;
+        xrn = a;
+        yrn = c;
+    }
+
+    void reset() {
+        isAlive = true;
+    }
+
     const sf::RectangleShape& getShape() const {
         return shape;
     }
