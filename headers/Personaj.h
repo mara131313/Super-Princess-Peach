@@ -28,7 +28,7 @@ public:
         shape.setFillColor(sf::Color::Magenta);
         shape.setPosition(x, y);
 
-        if (!font.loadFromFile("../fonts/VomitoCartoon.ttf")) {
+        if (!font.loadFromFile("fonts/VomitoCartoon.ttf")) {
             std::cerr << "Eroare la incarcarea fontului!" << std::endl;
         }
 
@@ -184,7 +184,7 @@ public:
 
     void resetJump() {
         isJumping = false;
-        viteza = 0.8f;
+        viteza = 5.f;
     }
 
     const sf::RectangleShape& getShape() const {
@@ -222,7 +222,8 @@ public:
     ~Personaj() = default;
 
     friend std::ostream& operator<<(std::ostream& os, const Personaj& p) {
-        os << "Viata personajului: " << p.viata;
+        os << "Viata personajului: " << p.viata << ". A inceput de pe pozitia x : " << p.x << " si y : "<< p.y
+        << ". Se deplaseaza cu viteza : " << p.viteza << "." << std::endl;
         return os;
     }
 };

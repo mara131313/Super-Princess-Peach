@@ -6,38 +6,30 @@ class Enemy {
 private:
     int viata, atac, culoare;
     float viteza, x1, x2, y1, y2, xrn, yrn;
-    bool isRight, isDown, isAlive = true;
+    bool isRight = true, isDown = true, isAlive = true;
     sf::RectangleShape shape;
 
 public:
-    Enemy() : viata(50), atac(50), culoare(6), viteza(0.8f), x1(0), x2(0), y1(0), y2(0), xrn(0), yrn(0), isRight(true), isDown(true) {
+    Enemy() : viata(50), atac(50), culoare(6), viteza(0.8f), x1(0), x2(0), y1(0), y2(0), xrn(0), yrn(0){
         shape.setSize(sf::Vector2f(40.f, 60.f));
         setShapeColor();
         shape.setPosition(xrn, yrn);
     }
 
     Enemy(int _viata, int _atac, int _culoare, float _viteza, float _x1, float _x2, float _y1,
-        float _y2, float _xrn, float _yrn, bool _isRight, bool _isDown) :
+        float _y2, float _xrn, float _yrn) :
         viata(_viata), atac(_atac), culoare(_culoare), viteza(_viteza), x1(_x1), x2(_x2), y1(_y1),
-        y2(_y2), xrn(_xrn), yrn(_yrn), isRight(_isRight), isDown(_isDown) {
+        y2(_y2), xrn(_xrn), yrn(_yrn) {
         shape.setSize(sf::Vector2f(40.f, 60.f));
         setShapeColor();
         shape.setPosition(xrn, yrn);
     }
 
-    Enemy(const Enemy& altEnemies) {
-        viata = altEnemies.viata;
-        atac = altEnemies.atac;
-        culoare = altEnemies.culoare;
-        viteza = altEnemies.viteza;
-        x1 = altEnemies.x1;
-        x2 = altEnemies.x2;
-        y1 = altEnemies.y1;
-        y2 = altEnemies.y2;
-        xrn = altEnemies.xrn;
-        yrn = altEnemies.yrn;
-        isRight = altEnemies.isRight;
-        isDown = altEnemies.isDown;
+    Enemy(const Enemy& altEnemies) : viata(altEnemies.viata), atac(altEnemies.atac), culoare(altEnemies.culoare),
+    viteza(altEnemies.viteza), x1(altEnemies.x1), x2(altEnemies.x2), y1(altEnemies.y1), y2(altEnemies.y2),
+    xrn(altEnemies.xrn), yrn(altEnemies.yrn), isRight(altEnemies.isRight), isDown(altEnemies.isDown),
+    isAlive(altEnemies.isAlive), shape(altEnemies.shape) {
+        std::cout << "Constructor de copiere" << std::endl;
     }
 
     Enemy& operator=(const Enemy& altEnemy) {
@@ -61,7 +53,7 @@ public:
     Enemy(Enemy&& altEnemy) noexcept :
     viata(altEnemy.viata), atac(altEnemy.atac), culoare(altEnemy.culoare), viteza(altEnemy.viteza), x1(altEnemy.x1),
     x2(altEnemy.x2), y1(altEnemy.y1), y2(altEnemy.y2), xrn(altEnemy.xrn), yrn(altEnemy.yrn),
-    isRight(altEnemy.isRight), isDown(altEnemy.isDown), shape(std::move(altEnemy.shape)) {
+    isRight(altEnemy.isRight), isDown(altEnemy.isDown), isAlive(altEnemy.isAlive), shape(std::move(altEnemy.shape)) {
         altEnemy.viata = 0;
         altEnemy.atac = 0;
         altEnemy.viteza = 0;
@@ -73,6 +65,7 @@ public:
         altEnemy.yrn = 0;
         altEnemy.isRight = true;
         altEnemy.isDown = true;
+        altEnemy.isAlive = true;
         std::cout << "Enemy mutat!" << std::endl;
     }
 
@@ -91,6 +84,7 @@ public:
         yrn = altEnemy.yrn;
         isRight = altEnemy.isRight;
         isDown = altEnemy.isDown;
+        isAlive = altEnemy.isAlive;
         shape = std::move(altEnemy.shape);
 
         altEnemy.viata = 0;
@@ -104,6 +98,7 @@ public:
         altEnemy.yrn = 0;
         altEnemy.isRight = true;
         altEnemy.isDown = true;
+        altEnemy.isAlive = true;
         std::cout << "Enemy atribuit prin mutare!" << std::endl;
 
         return *this;
@@ -190,6 +185,8 @@ public:
 
     void reset() {
         isAlive = true;
+        isDown = true;
+        isRight = true;
     }
 
     const sf::RectangleShape& getShape() const {
@@ -199,7 +196,8 @@ public:
     ~Enemy() = default;
 
     friend std::ostream& operator<<(std::ostream& os, const Enemy& enemy) {
-        os<< "ataca cu : " << enemy.atac<< " damage.";
+        os << "ataca cu : " << enemy.atac<< " damage." << " Se deplaseaza de la x = " << enemy.x1 << " pana la x = " << enemy.x2 <<
+        " si de la y = " << enemy.y1 << " pana la y = " << enemy.y2 << "." << std::endl;
         return os;
     }
 };
