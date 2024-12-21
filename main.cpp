@@ -107,12 +107,10 @@ int main() {
             };
 
             joc.getEnemies().clear();
-            int i = 0;
             for (auto& position : initialPositions) {
                 joc.getEnemies().emplace_back(50, 50, std::get<0>(position), 6.f, std::get<1>(position),
                 std::get<2>(position), std::get<3>(position), std::get<4>(position), std::get<1>(position), std::get<2>(position));
                 joc.getEnemies().back().reset();
-                ++i;
             }
         }
     window.clear(sf::Color::Cyan);
