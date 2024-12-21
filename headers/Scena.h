@@ -43,7 +43,7 @@ public:
             platform.draw(window);
         }
         personaj.draw(window);
-        for (auto& enemy : enemies) {
+        for (const auto& enemy : enemies) {
             if (enemy.getIsAlive()) {
                 enemy.draw(window);
             }
