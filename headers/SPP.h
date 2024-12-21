@@ -1,35 +1,50 @@
-#include <vector>
-#include <tuple>
+#pragma once
 #include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
-#include "headers/Platforma.h"
-#include "headers/Personaj.h"
-#include "headers/Enemy.h"
-#include "headers/Scena.h"
+#include "Platforma.h"
+#include "Personaj.h"
+#include "Enemy.h"
+#include "Scena.h"
 
-int main() {
+
+class SPP {
+private:
+    sf::RenderWindow window;
     sf::ContextSettings settings;
     sf::Clock clock;
+    sf::Event event{};
+    sf::Font font;
+    sf::Text win, lose;
+    bool gameWon;
+
+    Personaj Mara;
+    Enemy Cosmin, Victor, Dimu;
+    std::vector<Enemy> enemies;
+    std::vector<Platforma> platforms;
+    Scena joc;
+public:
+    SPP()
+        : gameWon(false),
+          Mara(100, 5.f, 100.f, 400.f),
+          Cosmin(50, 50, 1, 6.f, 1100, 1350, 420, 420, 1100, 420),
+          Victor(50, 50, 4, 6.f, 1250, 1400, 240, 240, 1250, 240),
+          Dimu(), enemies{}, platforms{}, joc(Mara, enemies, platforms) {
+
     settings.antialiasingLevel = 4;
     settings.majorVersion = 3;
     settings.minorVersion = 0;
     settings.sRgbCapable = false;
 
-    sf::RenderWindow window(sf::VideoMode(1500, 600), "Super Princess Peach", sf::Style::Default, settings);
+    window.create(sf::VideoMode(1500, 600), "Super Princess Peach", sf::Style::Default, settings);
 
-    Personaj Mara(100, 5.f, 100.f, 400.f);
-    Enemy Cosmin(50, 50, 1, 6.f, 1100, 1350, 420, 420, 1100, 420),
-    Victor(50, 50, 4, 6.f, 1250, 1400, 240, 240, 1250, 240), Dimu;
     Dimu = Victor;
     Dimu.setPozi(650, 950, 120, 120);
 
-    std::vector<Enemy> enemies;
     enemies.reserve(10);
     enemies.emplace_back(Cosmin);
     enemies.emplace_back(Victor);
     enemies.emplace_back(Dimu);
 
-    std::vector platforms = {
+    platforms = {
         //stanga jos
         Platforma(0.f, 480.f, 650.f, 20.f, sf::Color{33, 206, 108}),
         Platforma(0.f, 500.f, 650.f, 100.f, sf::Color{107, 31, 31}),
@@ -55,14 +70,6 @@ int main() {
         Platforma(450, 200.f,600.f, 50.f, sf::Color{107, 31, 31})
     };
 
-    Scena joc(Mara, enemies, platforms);
-
-    std::cout << Mara << "Cosmin " << Cosmin << "Victor " << Victor << "Dimu " << Dimu << std::endl;
-
-    sf::Event event = {};
-    sf::Font font;
-    sf::Text win, lose;
-
     if (!font.loadFromFile("fonts/VomitoCartoon.ttf")) {
         std::cerr << "Eroare la incarcarea fontului!" << std::endl;
     }
@@ -78,9 +85,15 @@ int main() {
     lose.setFillColor(sf::Color::Red);
     lose.setStyle(sf::Text::Bold);
     lose.setPosition(100.f, 100.f);
+}
 
-    bool gameWon = false;
+~SPP() = default;
 
+
+void run() {
+    std::cout << Mara << "Cosmin " << Cosmin << "Victor " << Victor << "Dimu " << Dimu << std::endl;
+
+    sf::Event event = {};
     while (window.isOpen()) {
         window.setFramerateLimit(150);
         while (window.pollEvent(event)) {
@@ -95,6 +108,7 @@ int main() {
                 window.draw(lose);
             }
         }
+
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::R) && joc.getPersonaj().getIsOver()) {
             win.setString("");
             lose.setString("");
@@ -103,7 +117,7 @@ int main() {
             std::vector<std::tuple<int, float, float, float, float>> initialPositions = {
                 {1, 1100, 1350, 420, 420},
                 {4, 1250, 1400, 240, 240},
-                {7, 650, 950, 120, 120}
+                {0, 650, 950, 120, 120}
             };
 
             joc.getEnemies().clear();
@@ -115,56 +129,56 @@ int main() {
                 ++i;
             }
         }
-    window.clear(sf::Color::Cyan);
 
-    constexpr float gravity = 0.1f;
+        window.clear(sf::Color::Cyan);
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-        joc.getPersonaj().walk(-1, joc.getPlatforms(), gravity);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-        joc.getPersonaj().walk(1, joc.getPlatforms(), gravity);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-        joc.getPersonaj().jump();
-        joc.getPersonaj().resetJump();
-    }
+        constexpr float gravity = 0.1f;
 
-    joc.update(gravity);
-
-    for (const auto& platform : joc.getPlatforms()) {
-        platform.draw(window);
-    }
-
-    sf::Time deltaTime = clock.restart();
-    float dt = deltaTime.asSeconds();
-    for (auto it = joc.getEnemies().begin(); it != joc.getEnemies().end(); ) {
-        if (!it->getIsAlive()) {
-            it = joc.getEnemies().erase(it);
-        } else {
-            it->walk(dt);
-            it->draw(window);
-            joc.getPersonaj().attacked(*it);
-            joc.getPersonaj().kill(*it);
-            ++it;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+            joc.getPersonaj().walk(-1, joc.getPlatforms(), gravity);
         }
-    }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+            joc.getPersonaj().walk(1, joc.getPlatforms(), gravity);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+            joc.getPersonaj().jump();
+            joc.getPersonaj().resetJump();
+        }
 
-    if (joc.getPersonaj().getIsOver() && !gameWon) {
-        lose.setString("GAME OVER!! PRESS R TO RESTART");
-        window.draw(lose);
-        joc.getPersonaj().GameOver();
-    }
+        joc.update(gravity);
 
-    if ( joc.getEnemies().empty() && joc.getPersonaj().getViata()) {
-        gameWon = true;
-        win.setString("T O P !! AI CASTIGAT");
-        window.draw(win);
-    }
+        for (const auto& platform : joc.getPlatforms()) {
+            platform.draw(window);
+        }
 
-    joc.draw(window);
-    window.display();
-    }
+        sf::Time deltaTime = clock.restart();
+        const float dt = deltaTime.asSeconds();
+        for (auto it = joc.getEnemies().begin(); it != joc.getEnemies().end(); ) {
+            if (!it->getIsAlive()) {
+                it = joc.getEnemies().erase(it);
+            } else {
+                it->walk(dt);
+                it->draw(window);
+                joc.getPersonaj().attacked(*it);
+                joc.getPersonaj().kill(*it);
+                ++it;
+            }
+        }
 
-    return 0;
+        if (joc.getPersonaj().getIsOver() && !gameWon) {
+            lose.setString("GAME OVER!! PRESS R TO RESTART");
+            window.draw(lose);
+            joc.getPersonaj().GameOver();
+        }
+
+        if (joc.getEnemies().empty() && joc.getPersonaj().getViata()) {
+            gameWon = true;
+            win.setString("T O P !! AI CASTIGAT");
+            window.draw(win);
+        }
+
+        joc.draw(window);
+        window.display();
+    }
 }
+};

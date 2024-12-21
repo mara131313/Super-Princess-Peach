@@ -64,6 +64,7 @@ add_executable(${PROJECT_NAME}
         fonts/SuperShiny.ttf
         fonts/VomitoCartoon.ttf
         headers/Scena.h
+        headers/SPP.h
 )
 
 include(cmake/CompilerFlags.cmake)

@@ -28,8 +28,8 @@ public:
         return platforms;
     }
 
-    void update(const float grav, sf::RenderWindow& window) {
-        personaj.update(platforms, grav, enemies, window);
+    void update(const float grav) {
+        personaj.update(platforms, grav, enemies);
         for (auto& enemy : enemies) {
             if (enemy.getIsAlive()) {
                 enemy.walk(clock.getElapsedTime().asSeconds());

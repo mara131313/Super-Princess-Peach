@@ -17,9 +17,6 @@ private:
     sf::Time lastHitTime;
     const float cooldownDuration = 3.0f;
 
-    sf::Font font;
-    sf::Text lose;
-
 public:
     Personaj(int _viata, float _viteza, float _x, float _y) :
     viata(_viata), viteza(_viteza), x(_x), y(_y), velocity(0.f, 0.f), isOnGround(false), isJumping(false),
@@ -27,16 +24,6 @@ public:
         shape.setSize(sf::Vector2f(40.f, 40.f));
         shape.setFillColor(sf::Color::Magenta);
         shape.setPosition(x, y);
-
-        if (!font.loadFromFile("fonts/VomitoCartoon.ttf")) {
-            std::cerr << "Eroare la incarcarea fontului!" << std::endl;
-        }
-
-        lose.setFont(font);
-        lose.setCharacterSize(80);
-        lose.setFillColor(sf::Color::Red);
-        lose.setStyle(sf::Text::Bold);
-        lose.setPosition(100.f, 100.f);
     }
 
     Personaj(const Personaj& altPers) :
@@ -58,7 +45,7 @@ public:
         return *this;
     }
 
-    void attacked(const Enemy& enemy, sf::RenderWindow& window) {
+    void attacked(const Enemy& enemy) {
     if (lastHitTime + sf::seconds(cooldownDuration) <= clock.getElapsedTime()) {
         const float MaraStanga = shape.getPosition().x;
         const float MaraDreapta = shape.getPosition().x + shape.getSize().x;
@@ -71,7 +58,7 @@ public:
         const float enemyJos = enemy.getShape().getPosition().y + enemy.getShape().getSize().y;
 
         if (!viata) {
-            GameOver(window);
+            GameOver();
             shape.move(-10, -10);
         }
 
@@ -112,9 +99,9 @@ public:
             }
     }
 
-    void checkEnemyCollisions(const std::vector<Enemy>& enemies, sf::RenderWindow& window) {
+    void checkEnemyCollisions(const std::vector<Enemy>& enemies) {
         for (const auto& enemy : enemies) {
-            attacked(enemy, window);
+            attacked(enemy);
         }
     }
 
@@ -171,7 +158,7 @@ public:
         }
     }
 
-    void update(const std::vector<Platforma>& platforms, const float grav, const std::vector<Enemy>& enemies, sf::RenderWindow& window) {
+    void update(const std::vector<Platforma>& platforms, const float grav, const std::vector<Enemy>& enemies) {
         if (!isOnGround) {
             velocity.y += grav;
             if (velocity.y > 5.f)
@@ -179,7 +166,7 @@ public:
         }
         shape.move(0, velocity.y);
         updateGround(platforms);
-        checkEnemyCollisions(enemies, window);
+        checkEnemyCollisions(enemies);
     }
 
     void resetJump() {
@@ -199,9 +186,7 @@ public:
         return isOver;
     }
 
-    void GameOver(sf::RenderWindow& window)  {
-        lose.setString("GAME OVER!! PRESS R TO RESTART");
-            window.draw(lose);
+    void GameOver()  {
             isOver = true;
     }
 
@@ -211,7 +196,6 @@ public:
         shape.setSize(sf::Vector2f(40.f, 40.f));
         shape.setFillColor(sf::Color::Magenta);
         shape.setPosition(x, y);
-        lose.setString("");
         std::cout << "Ai reinceput jocul!" << std::endl;
     }
 
