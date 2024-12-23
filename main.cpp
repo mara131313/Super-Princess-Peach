@@ -18,10 +18,10 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(1500, 600), "Super Princess Peach", sf::Style::Default, settings);
 
     Personaj Mara(100, 5.f, 100.f, 400.f);
-    Enemy Cosmin(50, 50, 1, 6.f, 1100, 1350, 420, 420, 1100, 420),
-    Victor(50, 50, 4, 6.f, 1250, 1400, 240, 240, 1250, 240), Dimu;
-    Dimu = Victor;
-    Dimu.setPozi(650, 950, 120, 120);
+    Enemy Cosmin(50, 50, 1, 6.f, 1100, 1350, 420, 420, 1100, 420),Victor, Dimu;
+    Cosmin = Dimu = Victor;
+    Dimu.setPozi(650, 950, 120, 120, 7);
+    Victor.setPozi(1250, 1400, 240, 240, 4);
 
     std::vector<Enemy> enemies;
     enemies.reserve(10);
