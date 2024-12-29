@@ -12,7 +12,7 @@ private:
 public:
     Enemy() : viata(50), atac(50), culoare(6), viteza(0.8f), x1(0), x2(0), y1(0), y2(0), xrn(0), yrn(0){
         shape.setSize(sf::Vector2f(40.f, 60.f));
-        setShapeColor(culoare);
+        setShapeColor();
         shape.setPosition(xrn, yrn);
     }
 
@@ -21,7 +21,7 @@ public:
         viata(_viata), atac(_atac), culoare(_culoare), viteza(_viteza), x1(_x1), x2(_x2), y1(_y1),
         y2(_y2), xrn(_xrn), yrn(_yrn) {
         shape.setSize(sf::Vector2f(40.f, 60.f));
-        setShapeColor(culoare);
+        setShapeColor();
         shape.setPosition(xrn, yrn);
     }
 
@@ -33,13 +33,20 @@ public:
     }
 
     Enemy& operator=(const Enemy& altEnemy) {
-        if (this != &altEnemy) {
-            this->viata = altEnemy.viata;
-            this->atac = altEnemy.atac;
-            this->viteza = altEnemy.viteza;
-            this->isRight = altEnemy.isRight;
-            this->isDown = altEnemy.isDown;
-        }
+        if (this == &altEnemy)
+            return *this;
+        viata = altEnemy.viata;
+        atac = altEnemy.atac;
+        culoare = altEnemy.culoare;
+        viteza = altEnemy.viteza;
+        x1 = altEnemy.x1;
+        x2 = altEnemy.x2;
+        y1 = altEnemy.y1;
+        y2 = altEnemy.y2;
+        xrn = altEnemy.xrn;
+        yrn = altEnemy.yrn;
+        isRight = altEnemy.isRight;
+        isDown = altEnemy.isDown;
         return *this;
     }
 
@@ -101,7 +108,7 @@ public:
         return atac;
     }
 
-    void setShapeColor(int culoare) {
+    void setShapeColor() {
         switch (culoare) {
             case 1: shape.setFillColor(sf::Color::Green);
             break;
@@ -125,13 +132,13 @@ public:
     void walk(const float deltaTime) {
         if (y1 == y2 && isAlive) {
             if (isRight) {
-                xrn += 4 * viteza * deltaTime;
+                xrn += viteza * 4 * deltaTime;
                 if (xrn >= x2) {
                     xrn = x2;
                     isRight = false;
                 }
             } else {
-                xrn -= 4 * viteza * deltaTime;
+                xrn -= viteza * 4 * deltaTime;
                 if (xrn <= x1) {
                     xrn = x1;
                     isRight = true;
@@ -167,14 +174,13 @@ public:
         return isAlive;
     }
 
-    void setPozi(const float a, const float b, const float c, const float d, const int e) {
+    void setPozi(const float a, const float b, const float c, const float d) {
         x1 = a;
         x2 = b;
         y1 = c;
         y2 = d;
         xrn = a;
         yrn = c;
-        setShapeColor(e);
     }
 
     void reset() {
