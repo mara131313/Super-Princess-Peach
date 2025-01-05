@@ -27,11 +27,11 @@ public:
         shape.setPosition(xrn, yrn);
     }
 
-    Enemy(const Enemy& altEnemies) : viata(altEnemies.viata), atac(altEnemies.atac), culoare(altEnemies.culoare),
+    Enemy(const Enemy& altEnemies) : nume(altEnemies.nume), viata(altEnemies.viata), atac(altEnemies.atac), culoare(altEnemies.culoare),
     viteza(altEnemies.viteza), x1(altEnemies.x1), x2(altEnemies.x2), y1(altEnemies.y1), y2(altEnemies.y2),
     xrn(altEnemies.xrn), yrn(altEnemies.yrn), isRight(altEnemies.isRight), isDown(altEnemies.isDown),
     isAlive(altEnemies.isAlive), shape(altEnemies.shape) {
-        nume = altEnemies.nume;
+        std::cout << "Constructor de copiere" << std::endl;
     }
 
     Enemy& operator=(const Enemy& altEnemy) {
