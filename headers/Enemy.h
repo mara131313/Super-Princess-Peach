@@ -1,24 +1,26 @@
 #pragma once
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include <utility>
 
 class Enemy {
 private:
+    std::string nume;
     int viata, atac, culoare;
     float viteza, x1, x2, y1, y2, xrn, yrn;
     bool isRight = true, isDown = true, isAlive = true;
     sf::RectangleShape shape;
 
 public:
-    Enemy() : viata(50), atac(50), culoare(6), viteza(0.8f), x1(0), x2(0), y1(0), y2(0), xrn(0), yrn(0){
+    Enemy() : nume("Inamic"), viata(50), atac(50), culoare(6), viteza(0.8f), x1(0), x2(0), y1(0), y2(0), xrn(0), yrn(0){
         shape.setSize(sf::Vector2f(40.f, 60.f));
         setShapeColor();
         shape.setPosition(xrn, yrn);
     }
 
-    Enemy(int _viata, int _atac, int _culoare, float _viteza, float _x1, float _x2, float _y1,
+    Enemy(std::string _nume, int _viata, int _atac, int _culoare, float _viteza, float _x1, float _x2, float _y1,
         float _y2, float _xrn, float _yrn) :
-        viata(_viata), atac(_atac), culoare(_culoare), viteza(_viteza), x1(_x1), x2(_x2), y1(_y1),
+        nume(std::move(_nume)), viata(_viata), atac(_atac), culoare(_culoare), viteza(_viteza), x1(_x1), x2(_x2), y1(_y1),
         y2(_y2), xrn(_xrn), yrn(_yrn) {
         shape.setSize(sf::Vector2f(40.f, 60.f));
         setShapeColor();
@@ -29,7 +31,7 @@ public:
     viteza(altEnemies.viteza), x1(altEnemies.x1), x2(altEnemies.x2), y1(altEnemies.y1), y2(altEnemies.y2),
     xrn(altEnemies.xrn), yrn(altEnemies.yrn), isRight(altEnemies.isRight), isDown(altEnemies.isDown),
     isAlive(altEnemies.isAlive), shape(altEnemies.shape) {
-        std::cout << "Constructor de copiere" << std::endl;
+        nume = altEnemies.nume;
     }
 
     Enemy& operator=(const Enemy& altEnemy) {
@@ -174,6 +176,14 @@ public:
         return isAlive;
     }
 
+    void setNume(const std::string& e) {
+        if (!e.empty()) {
+            nume = e;
+        } else {
+            std::cerr << "Nume invalid!\n";
+        }
+    }
+
     void setPozi(const float a, const float b, const float c, const float d) {
         x1 = a;
         x2 = b;
@@ -193,11 +203,16 @@ public:
         return shape;
     }
 
+    std::string getNume() const {
+        return nume;
+    }
+
     ~Enemy() = default;
 
     friend std::ostream& operator<<(std::ostream& os, const Enemy& enemy) {
-        os << "ataca cu : " << enemy.atac<< " damage." << " Se deplaseaza de la x = " << enemy.x1 << " pana la x = " << enemy.x2 <<
-        " si de la y = " << enemy.y1 << " pana la y = " << enemy.y2 << "." << std::endl;
+        os << enemy.nume << " ataca cu " << enemy.atac << " damage. ";
+        os << "Se deplaseaza de la x = " << enemy.x1 << " pana la x = " << enemy.x2;
+        os << " si de la y = " << enemy.y1 << " pana la y = " << enemy.y2 << std::endl;
         return os;
     }
 };

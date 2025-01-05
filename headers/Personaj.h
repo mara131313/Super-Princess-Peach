@@ -2,7 +2,6 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <vector>
-
 #include "Enemy.h"
 #include "Platforma.h"
 
@@ -18,7 +17,7 @@ private:
     const float cooldownDuration = 3.0f;
 
 public:
-    Personaj(int _viata, float _viteza, float _x, float _y) :
+    Personaj(const int _viata, const float _viteza, const float _x, const float _y) :
     viata(_viata), viteza(_viteza), x(_x), y(_y), velocity(0.f, 0.f), isOnGround(false), isJumping(false),
     isOver(false), lastHitTime(sf::Time::Zero) {
         shape.setSize(sf::Vector2f(40.f, 40.f));

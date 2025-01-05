@@ -18,10 +18,11 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(1500, 600), "Super Princess Peach", sf::Style::Default, settings);
 
     Personaj Mara(100, 5.f, 100.f, 400.f);
-    Enemy Cosmin(50, 50, 1, 6.f, 1100, 1350, 420, 420, 1100, 420),
-    Victor(50, 50, 4, 6.f, 1250, 1400, 240, 240, 1250, 240), Dimu;
+    Enemy Cosmin("Cosmin", 50, 50, 1, 6.f, 1100, 1350, 420, 420, 1100, 420),
+    Victor("Victor", 50, 50, 4, 6.f, 1250, 1400, 240, 240, 1250, 240), Dimu;
     Dimu = Victor;
     Dimu.setPozi(650, 950, 120, 120);
+    Dimu.setNume("Dimu");
 
     std::vector<Enemy> enemies;
     enemies.reserve(10);
@@ -57,7 +58,7 @@ int main() {
 
     Scena joc(Mara, enemies, platforms);
 
-    std::cout << Mara << "Cosmin " << Cosmin << "Victor " << Victor << "Dimu " << Dimu << std::endl;
+    std::cout << joc << std::endl;
 
     sf::Event event = {};
     sf::Font font;
@@ -100,16 +101,17 @@ int main() {
             lose.setString("");
 
             joc.getPersonaj().restart();
-            std::vector<std::tuple<int, float, float, float, float>> initialPositions = {
-                {1, 1100, 1350, 420, 420},
-                {4, 1250, 1400, 240, 240},
-                {7, 650, 950, 120, 120}
+            std::vector<std::tuple<int, float, float, float, float, std::string>> initialPositions = {
+                {1, 1100, 1350, 420, 420, "Cosmin"},
+                {4, 1250, 1400, 240, 240, "Victor"},
+                {7, 650, 950, 120, 120, "Dimu"}
             };
 
             joc.getEnemies().clear();
             for (auto& position : initialPositions) {
-                joc.getEnemies().emplace_back(50, 50, std::get<0>(position), 6.f, std::get<1>(position),
-                std::get<2>(position), std::get<3>(position), std::get<4>(position), std::get<1>(position), std::get<2>(position));
+                joc.getEnemies().emplace_back(
+        std::get<5>(position), 50, 50, std::get<0>(position), 6.f, std::get<1>(position),
+        std::get<2>(position), std::get<3>(position), std::get<4>(position), std::get<1>(position), std::get<3>(position) );
                 joc.getEnemies().back().reset();
             }
         }

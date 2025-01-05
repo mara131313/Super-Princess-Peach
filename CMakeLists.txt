@@ -60,10 +60,10 @@ add_executable(${PROJECT_NAME}
         headers/Platforma.h
         headers/Personaj.h
         headers/Enemy.h
-        headers/atac.h
         fonts/SuperShiny.ttf
         fonts/VomitoCartoon.ttf
         headers/Scena.h
+        headers/Obiect.h
 )
 
 include(cmake/CompilerFlags.cmake)

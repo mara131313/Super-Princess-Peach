@@ -49,4 +49,19 @@ public:
             }
         }
     }
+
+    friend std::ostream& operator<<(std::ostream& os, const Scena& scena) {
+        os << "Personaj: " << scena.personaj;
+        os << "Inamici:\n";
+        for (const auto& enemy : scena.enemies) {
+            os << enemy;
+        }
+
+        os << "Platforme:\n";
+        for (const auto& platform : scena.platforms) {
+            os << platform << "\n";
+        }
+        return os;
+    }
+
 };
