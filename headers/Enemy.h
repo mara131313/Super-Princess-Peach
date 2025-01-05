@@ -203,10 +203,6 @@ public:
         return shape;
     }
 
-    std::string getNume() const {
-        return nume;
-    }
-
     ~Enemy() = default;
 
     friend std::ostream& operator<<(std::ostream& os, const Enemy& enemy) {
