@@ -23,7 +23,7 @@ public:
     ~Platforma() = default;
 
     friend std::ostream& operator<<(std::ostream& os, const Platforma& platforma) {
-        const auto& shape = platforma.getShape();
+        const auto& shape = platforma.platformShape;
         os << "Platforma de pozitie ("
            << shape.getPosition().x << ", "
            << shape.getPosition().y << "), dimensiuni ("

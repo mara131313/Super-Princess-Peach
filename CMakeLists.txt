@@ -64,6 +64,9 @@ add_executable(${PROJECT_NAME}
         fonts/VomitoCartoon.ttf
         headers/Scena.h
         headers/Obiect.h
+        headers/Banuti.h
+        headers/TimeBoost.h
+        headers/Heal.h
 )
 
 include(cmake/CompilerFlags.cmake)

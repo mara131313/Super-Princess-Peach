@@ -4,6 +4,7 @@
 #include <vector>
 #include "Enemy.h"
 #include "Platforma.h"
+#include "Obiect.h"
 
 class Personaj {
 private:
@@ -196,6 +197,26 @@ public:
         shape.setFillColor(sf::Color::Magenta);
         shape.setPosition(x, y);
         std::cout << "Ai reinceput jocul!" << std::endl;
+    }
+
+    void collectObiective(const std::vector<Obiect>& obiecte) const {
+        for (const auto& obiect : obiecte) {
+            if (obiect.checkCollision(shape)) {
+                std::cout << "Obiect colectat!\n";
+            }
+        }
+    }
+
+    void addViata() {
+        if (viata > 0) {
+            viata += 25;
+            if (viata > 100) {
+                viata = 100;
+            }
+            std::cout << "Personajul a primit 25 puncte de viata. Viata actuala: " << viata << "/100hp" << std::endl;
+        } else {
+            std::cerr << "Valoarea HP adaugata trebuie sa fie pozitiva!" << std::endl;
+        }
     }
 
     void draw(sf::RenderWindow& window) const {

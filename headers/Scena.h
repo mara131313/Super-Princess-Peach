@@ -51,15 +51,17 @@ public:
     }
 
     friend std::ostream& operator<<(std::ostream& os, const Scena& scena) {
-        os << "Personaj: " << scena.personaj;
-        os << "Inamici:\n";
+        os << "\n INFORMATII GENERALE:" << std::endl << " Daca esti atacat de 2 ori, fara a-ti da heal, ai murit. \n Daca vei cadea de pe platforme sub "
+        "harta, ai murit. \n Daca depasesti limita de timp, respectiv 2 minute, ai murit. \n Pentru a castiga trebuie sa acumulezi un minim de 3500p. \n"
+        "Inamici omorati: 150p. Banut acumulat: 50p. Heal acumulat: 50p. TimeBoost acumulat: 50p.\n\n PERSONAJ: \n" << scena.personaj << std::endl;
+        os << "INAMICI:\n";
         for (const auto& enemy : scena.enemies) {
             os << enemy;
         }
 
-        os << "Platforme:\n";
+        os << std::endl << "PLATFORME:\n";
         for (const auto& platform : scena.platforms) {
-            os << platform << "\n";
+            os << platform << std::endl;
         }
         return os;
     }
