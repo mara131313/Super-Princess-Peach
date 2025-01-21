@@ -21,7 +21,7 @@ public:
     virtual void interact() const = 0;
 
     virtual void print(std::ostream& os) const {
-        os << "Obiect la pozitia (" << x << ", " << y << ")";
+        os << "Obiect la pozitia (" << x << ", " << y << ") cu raza " << raza;
     }
 
     bool checkCollision(const sf::RectangleShape& player) const {
