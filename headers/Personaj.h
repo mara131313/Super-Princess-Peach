@@ -229,7 +229,6 @@ public:
         }
     }
 
-
     void addViata() {
         if (viata > 0) {
             viata += 25;

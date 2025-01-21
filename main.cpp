@@ -65,8 +65,8 @@ int main() {
     Personaj Mara(100, 5.f, 100.f, 400.f);
     Enemy Cosmin("Cosmin", 50, 50, 1, 6.f, 1100, 1350, 420, 420, 1100, 420),
     Victor("Victor", 50, 50, 4, 6.f, 1250, 1400, 240, 240, 1250, 240),
-    Alex("Alex", 50, 50, 3, 6.f, 480, 480, 400, 560, 480, 400),
-    Maria("Maria", 50, 50,5,  6.f, 830, 830, 400, 600, 830, 400), Dimu;
+    Alex("Alex", 50, 100, 3, 6.f, 480, 480, 400, 560, 480, 400),
+    Maria("Maria", 50, 100,5,  6.f, 830, 830, 400, 600, 830, 400), Dimu;
     Dimu = Victor;
     Dimu.setPozi(650, 950, 120, 120);
     Dimu.setNume("Dimu");
