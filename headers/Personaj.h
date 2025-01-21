@@ -5,6 +5,9 @@
 #include "Enemy.h"
 #include "Platforma.h"
 #include "Obiect.h"
+#include "Banuti.h"
+#include "Heal.h"
+#include "TimeBoost.h"
 
 class Personaj {
 private:
@@ -107,11 +110,10 @@ public:
 
     void updateGround(const std::vector<Platforma>& platforms) {
         isOnGround = false;
-
         for (const auto& platform : platforms) {
             if (platform.verif(shape)) {
-                float platformaSus = platform.getShape().getPosition().y;
-                float MaraJos = shape.getPosition().y + shape.getSize().y;
+                const float platformaSus = platform.getShape().getPosition().y;
+                const float MaraJos = shape.getPosition().y + shape.getSize().y;
 
                 if (velocity.y >= 0 && MaraJos <= platformaSus + velocity.y) {
                     isOnGround = true;
@@ -187,7 +189,7 @@ public:
     }
 
     void GameOver()  {
-            isOver = true;
+        isOver = true;
     }
 
     void restart() {
@@ -199,13 +201,34 @@ public:
         std::cout << "Ai reinceput jocul!" << std::endl;
     }
 
-    void collectObiective(const std::vector<Obiect>& obiecte) const {
-        for (const auto& obiect : obiecte) {
-            if (obiect.checkCollision(shape)) {
-                std::cout << "Obiect colectat!\n";
+    void collectObiecte(std::vector<std::unique_ptr<Obiect>>& obiecte, std::vector<std::unique_ptr<Obiect>>& obiecteColectate,
+        int& score, float& seconds) {
+        for (auto it = obiecte.begin(); it != obiecte.end();) {
+            if ((*it)->checkCollision(shape)) {
+                (*it)->action();
+                if (const auto* heal = dynamic_cast<Heal*>(it->get())) {
+                    score += 100;
+                    heal->interact();
+                    addViata();
+                } else if (const auto* bani = dynamic_cast<Banuti*>(it->get())) {
+                    score += bani->getValoare();
+                    bani->interact();
+                } else if (const auto* timeBoost = dynamic_cast<TimeBoost*>(it->get())) {
+                    timeBoost->print(std::cout);
+                    timeBoost->interact();
+                    seconds += 15;
+                    score += 100;
+                } else {
+                    (*it)->interact();
+                }
+                obiecteColectate.push_back((*it)->clone());
+                it = obiecte.erase(it);
+            } else {
+                ++it;
             }
         }
     }
+
 
     void addViata() {
         if (viata > 0) {
@@ -213,10 +236,8 @@ public:
             if (viata > 100) {
                 viata = 100;
             }
-            std::cout << "Personajul a primit 25 puncte de viata. Viata actuala: " << viata << "/100hp" << std::endl;
-        } else {
-            std::cerr << "Valoarea HP adaugata trebuie sa fie pozitiva!" << std::endl;
         }
+        std::cout << "Viata actuala: " << viata << "/100hp." << std::endl;
     }
 
     void draw(sf::RenderWindow& window) const {

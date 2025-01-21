@@ -206,9 +206,13 @@ public:
     ~Enemy() = default;
 
     friend std::ostream& operator<<(std::ostream& os, const Enemy& enemy) {
-        os << enemy.nume << " ataca cu " << enemy.atac << " damage. ";
-        os << "Se deplaseaza de la x = " << enemy.x1 << " pana la x = " << enemy.x2;
-        os << " si de la y = " << enemy.y1 << " pana la y = " << enemy.y2 << std::endl;
+        os << enemy.nume << " ataca cu ";
+        if (enemy.x1 == enemy.x2) {
+            os <<  "100 damage. Se deplaseaza de sus in jos, de la y = " << enemy.y1 << " pana la y = " << enemy.y2 << std::endl;
+        }
+        else {
+            os << enemy.atac << " damage. Se deplaseaza de la dreapta la stanga, de la x = " << enemy.x1 << " pana la x = " << enemy.y2 << std::endl;
+        }
         return os;
     }
 };

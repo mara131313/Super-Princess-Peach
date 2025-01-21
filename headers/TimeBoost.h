@@ -1,5 +1,4 @@
 #pragma once
-#include <iostream>
 #include "Obiect.h"
 
 class TimeBoost : public Obiect {
@@ -8,10 +7,10 @@ private:
 
 public:
     TimeBoost(const float x, const float y, const float time = 30.f) :
-    Obiect(x, y, 15, 5, 5, sf::Color::Red), time(time) {}
+    Obiect(x, y, 15, sf::Color::Red), time(time) {}
 
     void interact() const override {
-        std::cout << "Jucătorul primește " << time << " secunde adiționale!" << std::endl;
+        std::cout << " Ai primit " << time << " secunde aditionale." << std::endl;
     }
 
     std::unique_ptr<Obiect> clone() const override {

@@ -12,6 +12,44 @@
 #include "headers/Heal.h"
 #include "headers/TimeBoost.h"
 
+void initialObj(std::vector<std::unique_ptr<Obiect>>& obiecte) {
+    obiecte.clear();
+    for( int i = 10; i <= 610; i += 40) {
+        obiecte.emplace_back(std::make_unique<Banuti>(i, 450.f, 50));
+    }
+    for( int i = 480; i <= 1000; i += 40) {
+        obiecte.emplace_back(std::make_unique<Banuti>(i, 150.f, 50));
+    }
+    for( int i = 1080; i <= 1480; i += 40) {
+        obiecte.emplace_back(std::make_unique<Banuti>(i, 450.f, 50));
+    }
+    for( int i = 400; i <= 480; i += 40) {
+        obiecte.emplace_back(std::make_unique<Banuti>(i, 300.f, 50));
+    }
+    for( int i = 920; i <= 1000; i += 40) {
+        obiecte.emplace_back(std::make_unique<Banuti>(i, 300.f, 50));
+    }
+    for( int i = 670; i <= 750; i += 40) {
+        obiecte.emplace_back(std::make_unique<Banuti>(i, 300.f, 50));
+    }
+    obiecte.emplace_back(std::make_unique<Banuti>(1300.f, 240.f, 50));
+    obiecte.emplace_back(std::make_unique<Banuti>(1265.f, 230.f, 50));
+    obiecte.emplace_back(std::make_unique<Banuti>(1335.f, 230.f, 50));
+    obiecte.emplace_back(std::make_unique<Banuti>(1230.f, 210.f, 50));
+    obiecte.emplace_back(std::make_unique<Banuti>(1370.f, 210.f, 50));
+    obiecte.emplace_back(std::make_unique<Banuti>(1220.f, 170.f, 50));
+    obiecte.emplace_back(std::make_unique<Banuti>(1380.f, 170.f, 50));
+    obiecte.emplace_back(std::make_unique<Banuti>(1370.f, 130.f, 50));
+    obiecte.emplace_back(std::make_unique<Banuti>(1230.f, 130.f, 50));
+    obiecte.emplace_back(std::make_unique<Banuti>(1335.f, 110.f, 50));
+    obiecte.emplace_back(std::make_unique<Banuti>(1265.f, 110.f, 50));
+    obiecte.emplace_back(std::make_unique<Banuti>(1300.f, 100.f, 50));
+    obiecte.emplace_back(std::make_unique<Heal>(1450.f, 420.f, 25));
+    obiecte.emplace_back(std::make_unique<Heal>(85.f, 70.f, 25));
+    obiecte.emplace_back(std::make_unique<TimeBoost>(835.f, 400.f, 15.0f));
+    obiecte.emplace_back(std::make_unique<TimeBoost>(1295.f, 165.f, 15.0f));
+}
+
 int main() {
     sf::ContextSettings settings;
     sf::Clock clock, gameClock;
@@ -27,7 +65,7 @@ int main() {
     Personaj Mara(100, 5.f, 100.f, 400.f);
     Enemy Cosmin("Cosmin", 50, 50, 1, 6.f, 1100, 1350, 420, 420, 1100, 420),
     Victor("Victor", 50, 50, 4, 6.f, 1250, 1400, 240, 240, 1250, 240),
-    Alex("Alex", 50, 50, 3, 6.f, 480, 480, 400, 600, 480, 400),
+    Alex("Alex", 50, 50, 3, 6.f, 480, 480, 400, 560, 480, 400),
     Maria("Maria", 50, 50,5,  6.f, 830, 830, 400, 600, 830, 400), Dimu;
     Dimu = Victor;
     Dimu.setPozi(650, 950, 120, 120);
@@ -108,41 +146,8 @@ int main() {
 
     bool gameWon = false;
 
-    std::vector<std::unique_ptr<Obiect>> obiecte;
-    for( int i = 10; i <= 610; i += 40) {
-        obiecte.emplace_back(std::make_unique<Banuti>(i, 450.f, 10));
-    }
-    for( int i = 480; i <= 1000; i += 40) {
-        obiecte.emplace_back(std::make_unique<Banuti>(i, 150.f, 10));
-    }
-    for( int i = 1080; i <= 1480; i += 40) {
-        obiecte.emplace_back(std::make_unique<Banuti>(i, 450.f, 10));
-    }
-    for( int i = 400; i <= 480; i += 40) {
-        obiecte.emplace_back(std::make_unique<Banuti>(i, 300.f, 10));
-    }
-    for( int i = 920; i <= 1000; i += 40) {
-        obiecte.emplace_back(std::make_unique<Banuti>(i, 300.f, 10));
-    }
-    for( int i = 670; i <= 750; i += 40) {
-        obiecte.emplace_back(std::make_unique<Banuti>(i, 300.f, 10));
-    }
-    obiecte.emplace_back(std::make_unique<Banuti>(1300.f, 240.f, 10));
-    obiecte.emplace_back(std::make_unique<Banuti>(1265.f, 230.f, 10));
-    obiecte.emplace_back(std::make_unique<Banuti>(1335.f, 230.f, 10));
-    obiecte.emplace_back(std::make_unique<Banuti>(1230.f, 210.f, 10));
-    obiecte.emplace_back(std::make_unique<Banuti>(1370.f, 210.f, 10));
-    obiecte.emplace_back(std::make_unique<Banuti>(1220.f, 170.f, 10));
-    obiecte.emplace_back(std::make_unique<Banuti>(1380.f, 170.f, 10));
-    obiecte.emplace_back(std::make_unique<Banuti>(1370.f, 130.f, 10));
-    obiecte.emplace_back(std::make_unique<Banuti>(1230.f, 130.f, 10));
-    obiecte.emplace_back(std::make_unique<Banuti>(1335.f, 110.f, 10));
-    obiecte.emplace_back(std::make_unique<Banuti>(1265.f, 110.f, 10));
-    obiecte.emplace_back(std::make_unique<Banuti>(1300.f, 100.f, 10));
-    obiecte.emplace_back(std::make_unique<Heal>(1450.f, 420.f, 25));
-    obiecte.emplace_back(std::make_unique<Heal>(85.f, 70.f, 25));
-    obiecte.emplace_back(std::make_unique<TimeBoost>(835.f, 400.f, 5.0f));
-    obiecte.emplace_back(std::make_unique<TimeBoost>(1295.f, 165.f, 5.0f));
+    std::vector<std::unique_ptr<Obiect>> obiecte, obiecteColectate;
+    initialObj(obiecte);
 
     while (window.isOpen()) {
         window.setFramerateLimit(150);
@@ -152,13 +157,15 @@ int main() {
         }
 
         sf::Time elapsedTime = gameClock.getElapsedTime();
-        int totalseconds = static_cast<int>(elapsedTime.asSeconds());
+        static float bonusTime = 0.f;
+        float adjustedTime = elapsedTime.asSeconds() - bonusTime;
+        int totalseconds = static_cast<int>(adjustedTime);
         int minutes = totalseconds / 60;
         int seconds = totalseconds % 60;
         timerText.setString("Timp: " + std::to_string(minutes) + "min " + std::to_string(seconds)+ "sec ");
         scoreText.setString("Scor: " + std::to_string(score) + "p ");
 
-        if(minutes >= 2 && score <= 3500) {
+        if(minutes >= 1 && score <= 3750) {
             joc.getPersonaj().GameOver();
             if(!gameWon) {
                 lose.setString("GAME OVER!! PRESS R TO RESTART");
@@ -173,21 +180,24 @@ int main() {
                 window.draw(lose);
             }
         }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::G) && joc.getPersonaj().getIsOver()) {
+            Scena::analizaObiecte(obiecteColectate);
+        }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::R) && joc.getPersonaj().getIsOver()) {
             score = 0;
+            bonusTime = 0;
             win.setString("");
             lose.setString("");
             joc.getPersonaj().restart();
             gameClock.restart();
-
+            initialObj(obiecte);
             std::vector<std::tuple<int, float, float, float, float, std::string>> initialPositions = {
                 {1, 1100, 1350, 420, 420, "Cosmin"},
                 {4, 1250, 1400, 240, 240, "Victor"},
                 {6, 650, 950, 120, 120, "Dimu"},
-                {3, 480, 480, 400, 600, "Alex"},
+                {3, 480, 480, 400, 560, "Alex"},
                 {5, 830, 830, 400, 600, "Maria"}
             };
-
             joc.getEnemies().clear();
             for (auto& position : initialPositions) {
                 joc.getEnemies().emplace_back(
@@ -199,7 +209,6 @@ int main() {
 
         timerText.setString("Time spent: " + std::to_string(minutes) + "min " + std::to_string(seconds)+ "sec");
         scoreText.setString("Score: " + std::to_string(score) + "p");
-
 
         window.clear(sf::Color::Cyan);
 
@@ -226,11 +235,13 @@ int main() {
             obiect -> draw(window);
         }
 
+        joc.getPersonaj().collectObiecte(obiecte, obiecteColectate, score, bonusTime);
+
         sf::Time deltaTime = clock.restart();
         float dt = deltaTime.asSeconds();
         for (auto it = joc.getEnemies().begin(); it != joc.getEnemies().end(); ) {
             if (!it->getIsAlive()) {
-                score += 150;
+                score += 200;
                 it = joc.getEnemies().erase(it);
             } else {
                 it->walk(dt);
@@ -247,7 +258,7 @@ int main() {
             joc.getPersonaj().GameOver();
         }
 
-        if ( joc.getEnemies().empty() && joc.getPersonaj().getViata()) {
+        if ( ((score >= 4250 && minutes == 1) || (score == 4500 && minutes <= 1)) && joc.getPersonaj().getViata()) {
             gameWon = true;
             win.setString("T O P !! AI CASTIGAT");
             window.draw(win);

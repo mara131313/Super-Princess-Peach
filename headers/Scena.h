@@ -4,6 +4,7 @@
 #include "Platforma.h"
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+#include "Obiect.h"
 
 class Scena {
 private:
@@ -39,27 +40,49 @@ public:
     }
 
     void draw(sf::RenderWindow& window) const {
-        for (const auto& platform : platforms) {
-            platform.draw(window);
-        }
-        personaj.draw(window);
         for (const auto& enemy : enemies) {
             if (enemy.getIsAlive()) {
                 enemy.draw(window);
             }
         }
+        for (const auto& platform : platforms) {
+            platform.draw(window);
+        }
+        personaj.draw(window);
+    }
+
+    static void analizaObiecte(const std::vector<std::unique_ptr<Obiect>>& obiecteColectate) {
+        int totalBanuti = 0;
+        int totalHeal = 0;
+        int totalTimeBoosts = 0;
+
+        for (const auto& obiect : obiecteColectate) {
+            if (const auto* heal = dynamic_cast<Heal*>(obiect.get())) {
+                totalHeal += heal->getHeal();
+            } else if (const auto* bani = dynamic_cast<Banuti*>(obiect.get())) {
+                totalBanuti += bani->getValoare();
+            } else if (dynamic_cast<TimeBoost*>(obiect.get())) {
+                ++totalTimeBoosts;
+            }
+        }
+
+        std::cout << "Statistici obiecte colectate:\n";
+        std::cout << "Total hp adaugat: " << totalHeal << " hp.\n";
+        std::cout << "Total scor acumulat din banuti: " << totalBanuti << " p.\n";
+        std::cout << "Total TimeBoost-uri: " << totalTimeBoosts << " buc.\n";
     }
 
     friend std::ostream& operator<<(std::ostream& os, const Scena& scena) {
-        os << "\n INFORMATII GENERALE:" << std::endl << " Daca esti atacat de 2 ori, fara a-ti da heal, ai murit. \n Daca vei cadea de pe platforme sub "
-        "harta, ai murit. \n Daca depasesti limita de timp, respectiv 2 minute, ai murit. \n Pentru a castiga trebuie sa acumulezi un minim de 3500p. \n"
-        "Inamici omorati: 150p. Banut acumulat: 50p. Heal acumulat: 50p. TimeBoost acumulat: 50p.\n\n PERSONAJ: \n" << scena.personaj << std::endl;
-        os << "INAMICI:\n";
+        os << "\n INFORMATII GENERALE:\nDaca esti atacat de 2 ori de inamicii care se deplaseaza stanga-dreapta, fara a-ti da heal, ai murit. \nDaca "
+        "esti atacat o data de inamicii care se deplaseaza sus-jos ai murit. \nDaca vei cadea de pe platforme, sub harta, ai murit. \nDaca depasesti "
+        "limita de timp, respectiv un minut, fara a acumula minimul de 4250p pentru a castiga, ai murit. \nInamici omorati: 200p. \nBanut acumulat "
+        "(GALBEN): 50p. \nHeal acumulat (VERDE): 100p, +25hp. \nTimeBoost acumulat (ROSU): 100p, +15s.\nPentru GameStats in legatura cu obiectele "
+        "acumulate, apasati tasta G. Pentru a reincepe jocul, tasta R.\n\n PERSONAJ: \n" << scena.personaj << "\n "
+        "INAMICI:\n";
         for (const auto& enemy : scena.enemies) {
             os << enemy;
         }
-
-        os << std::endl << "PLATFORME:\n";
+        os << std::endl << " PLATFORME:\n";
         for (const auto& platform : scena.platforms) {
             os << platform << std::endl;
         }
