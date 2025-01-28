@@ -66,6 +66,8 @@ public:
         int totalHeal = 0;
         int totalTimeBoosts = 0;
 
+        std::cout << "Numarul de obiecte colectate in total: " << Object::getCntObj() << std::endl;
+
         for (const auto& object : collectedObjects) {
             if (const auto* heal = dynamic_cast<Heal*>(object.get())) {
                 totalHeal += heal->getHeal();
@@ -98,5 +100,4 @@ public:
         }
         return os;
     }
-
 };

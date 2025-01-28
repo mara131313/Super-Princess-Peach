@@ -1,16 +1,10 @@
-#include <vector>
 #include <tuple>
-#include <memory>
-#include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
-#include "headers/Platform.h"
-#include "headers/Character.h"
-#include "headers/Enemy.h"
 #include "headers/Stage.h"
-#include "headers/Object.h"
 #include "headers/Coins.h"
 #include "headers/Heal.h"
 #include "headers/TimeBoost.h"
+
+int Object::cntObj = 0;
 
 void initialObj(std::vector<std::unique_ptr<Object> > &objects) {
     objects.clear();
@@ -48,12 +42,6 @@ void initialObj(std::vector<std::unique_ptr<Object> > &objects) {
     objects.emplace_back(std::make_unique<Heal>(85.f, 70.f, 25));
     objects.emplace_back(std::make_unique<TimeBoost>(835.f, 400.f, 15.0f));
     objects.emplace_back(std::make_unique<TimeBoost>(1295.f, 165.f, 15.0f));
-}
-
-std::vector<std::unique_ptr<Object>> createObjects() {
-    std::vector<std::unique_ptr<Object>> objects;
-    initialObj(objects);
-    return objects;
 }
 
 int main() {
