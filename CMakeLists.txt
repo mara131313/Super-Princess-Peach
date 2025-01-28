@@ -57,14 +57,14 @@ add_executable(${PROJECT_NAME}
         main.cpp
         generated/src/Helper.cpp
         env_fixes.h
-        headers/Platforma.h
-        headers/Personaj.h
+        headers/Platform.h
+        headers/Character.h
         headers/Enemy.h
         fonts/SuperShiny.ttf
         fonts/VomitoCartoon.ttf
-        headers/Scena.h
-        headers/Obiect.h
-        headers/Banuti.h
+        headers/Stage.h
+        headers/Object.h
+        headers/Coins.h
         headers/TimeBoost.h
         headers/Heal.h
 )

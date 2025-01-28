@@ -3,51 +3,57 @@
 #include <memory>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
-#include "headers/Platforma.h"
-#include "headers/Personaj.h"
+#include "headers/Platform.h"
+#include "headers/Character.h"
 #include "headers/Enemy.h"
-#include "headers/Scena.h"
-#include "headers/Obiect.h"
-#include "headers/Banuti.h"
+#include "headers/Stage.h"
+#include "headers/Object.h"
+#include "headers/Coins.h"
 #include "headers/Heal.h"
 #include "headers/TimeBoost.h"
 
-void initialObj(std::vector<std::unique_ptr<Obiect>>& obiecte) {
-    obiecte.clear();
+void initialObj(std::vector<std::unique_ptr<Object> > &objects) {
+    objects.clear();
     for( int i = 10; i <= 610; i += 40) {
-        obiecte.emplace_back(std::make_unique<Banuti>(i, 450.f, 50));
+        objects.emplace_back(std::make_unique<Coins>(i, 450.f, 50));
     }
     for( int i = 480; i <= 1000; i += 40) {
-        obiecte.emplace_back(std::make_unique<Banuti>(i, 150.f, 50));
+        objects.emplace_back(std::make_unique<Coins>(i, 150.f, 50));
     }
     for( int i = 1080; i <= 1480; i += 40) {
-        obiecte.emplace_back(std::make_unique<Banuti>(i, 450.f, 50));
+        objects.emplace_back(std::make_unique<Coins>(i, 450.f, 50));
     }
     for( int i = 400; i <= 480; i += 40) {
-        obiecte.emplace_back(std::make_unique<Banuti>(i, 300.f, 50));
+        objects.emplace_back(std::make_unique<Coins>(i, 300.f, 50));
     }
     for( int i = 920; i <= 1000; i += 40) {
-        obiecte.emplace_back(std::make_unique<Banuti>(i, 300.f, 50));
+        objects.emplace_back(std::make_unique<Coins>(i, 300.f, 50));
     }
     for( int i = 670; i <= 750; i += 40) {
-        obiecte.emplace_back(std::make_unique<Banuti>(i, 300.f, 50));
+        objects.emplace_back(std::make_unique<Coins>(i, 300.f, 50));
     }
-    obiecte.emplace_back(std::make_unique<Banuti>(1300.f, 240.f, 50));
-    obiecte.emplace_back(std::make_unique<Banuti>(1265.f, 230.f, 50));
-    obiecte.emplace_back(std::make_unique<Banuti>(1335.f, 230.f, 50));
-    obiecte.emplace_back(std::make_unique<Banuti>(1230.f, 210.f, 50));
-    obiecte.emplace_back(std::make_unique<Banuti>(1370.f, 210.f, 50));
-    obiecte.emplace_back(std::make_unique<Banuti>(1220.f, 170.f, 50));
-    obiecte.emplace_back(std::make_unique<Banuti>(1380.f, 170.f, 50));
-    obiecte.emplace_back(std::make_unique<Banuti>(1370.f, 130.f, 50));
-    obiecte.emplace_back(std::make_unique<Banuti>(1230.f, 130.f, 50));
-    obiecte.emplace_back(std::make_unique<Banuti>(1335.f, 110.f, 50));
-    obiecte.emplace_back(std::make_unique<Banuti>(1265.f, 110.f, 50));
-    obiecte.emplace_back(std::make_unique<Banuti>(1300.f, 100.f, 50));
-    obiecte.emplace_back(std::make_unique<Heal>(1450.f, 420.f, 25));
-    obiecte.emplace_back(std::make_unique<Heal>(85.f, 70.f, 25));
-    obiecte.emplace_back(std::make_unique<TimeBoost>(835.f, 400.f, 15.0f));
-    obiecte.emplace_back(std::make_unique<TimeBoost>(1295.f, 165.f, 15.0f));
+    objects.emplace_back(std::make_unique<Coins>(1300.f, 240.f, 50));
+    objects.emplace_back(std::make_unique<Coins>(1265.f, 230.f, 50));
+    objects.emplace_back(std::make_unique<Coins>(1335.f, 230.f, 50));
+    objects.emplace_back(std::make_unique<Coins>(1230.f, 210.f, 50));
+    objects.emplace_back(std::make_unique<Coins>(1370.f, 210.f, 50));
+    objects.emplace_back(std::make_unique<Coins>(1220.f, 170.f, 50));
+    objects.emplace_back(std::make_unique<Coins>(1380.f, 170.f, 50));
+    objects.emplace_back(std::make_unique<Coins>(1370.f, 130.f, 50));
+    objects.emplace_back(std::make_unique<Coins>(1230.f, 130.f, 50));
+    objects.emplace_back(std::make_unique<Coins>(1335.f, 110.f, 50));
+    objects.emplace_back(std::make_unique<Coins>(1265.f, 110.f, 50));
+    objects.emplace_back(std::make_unique<Coins>(1300.f, 100.f, 50));
+    objects.emplace_back(std::make_unique<Heal>(1450.f, 420.f, 25));
+    objects.emplace_back(std::make_unique<Heal>(85.f, 70.f, 25));
+    objects.emplace_back(std::make_unique<TimeBoost>(835.f, 400.f, 15.0f));
+    objects.emplace_back(std::make_unique<TimeBoost>(1295.f, 165.f, 15.0f));
+}
+
+std::vector<std::unique_ptr<Object>> createObjects() {
+    std::vector<std::unique_ptr<Object>> objects;
+    initialObj(objects);
+    return objects;
 }
 
 int main() {
@@ -62,14 +68,14 @@ int main() {
 
     int score = 0;
 
-    Personaj Mara(100, 5.f, 100.f, 400.f);
+    Character Mara(100, 5.f, 100.f, 400.f);
     Enemy Cosmin("Cosmin", 50, 50, 1, 6.f, 1100, 1350, 420, 420, 1100, 420),
     Victor("Victor", 50, 50, 4, 6.f, 1250, 1400, 240, 240, 1250, 240),
     Alex("Alex", 50, 100, 3, 6.f, 480, 480, 400, 560, 480, 400),
     Maria("Maria", 50, 100,5,  6.f, 830, 830, 400, 600, 830, 400), Dimu;
     Dimu = Victor;
-    Dimu.setPozi(650, 950, 120, 120);
-    Dimu.setNume("Dimu");
+    Dimu.setPoz(650, 950, 120, 120);
+    Dimu.setName("Dimu");
 
     std::vector<Enemy> enemies;
     enemies.reserve(20);
@@ -80,45 +86,41 @@ int main() {
     enemies.emplace_back(Dimu);
 
     std::vector platforms = {
-        //stanga jos
-        Platforma(0.f, 480.f, 650.f, 20.f, sf::Color{33, 206, 108}),
-        Platforma(0.f, 500.f, 650.f, 100.f, sf::Color{107, 31, 31}),
+        //st jos
+        Platform(0.f, 480.f, 650.f, 20.f, sf::Color{33, 206, 108}),
+        Platform(0.f, 500.f, 650.f, 100.f, sf::Color{107, 31, 31}),
 
-        //mijloc jos
-        Platforma(800.f, 480.f, 100.f, 20.f, sf::Color{33, 206, 108}),
-        Platforma(800.f, 500.f, 100.f, 100.f, sf::Color{107, 31, 31}),
+        //mij jos
+        Platform(800.f, 480.f, 100.f, 20.f, sf::Color{33, 206, 108}),
+        Platform(800.f, 500.f, 100.f, 100.f, sf::Color{107, 31, 31}),
 
-        //dreapta jos
-        Platforma(1050.f, 480.f, 450.f, 20.f, sf::Color{33, 206, 108}),
-        Platforma(1050.f, 500.f, 450.f, 100.f, sf::Color{107, 31, 31}),
+        //dr jos
+        Platform(1050.f, 480.f, 450.f, 20.f, sf::Color{33, 206, 108}),
+        Platform(1050.f, 500.f, 450.f, 100.f, sf::Color{107, 31, 31}),
 
-        //dreapta sus
-        Platforma(1200.f, 300.f, 250.f, 20.f, sf::Color{33, 206, 108}),
-        Platforma(1200.f, 320.f, 250.f, 50.f, sf::Color{107, 31, 31}),
+        //dr sus
+        Platform(1200.f, 300.f, 250.f, 20.f, sf::Color{33, 206, 108}),
+        Platform(1200.f, 320.f, 250.f, 50.f, sf::Color{107, 31, 31}),
 
-        //stanga sus
-        Platforma(250.f, 300.f, 100.f, 20.f, sf::Color{33, 206, 108}),
-        Platforma(250.f, 320.f, 100.f, 50.f, sf::Color{107, 31, 31}),
+        //st sus
+        Platform(250.f, 300.f, 100.f, 20.f, sf::Color{33, 206, 108}),
+        Platform(250.f, 320.f, 100.f, 50.f, sf::Color{107, 31, 31}),
 
-        //mijloc sus
-        Platforma(450.f, 180.f, 600.f, 20.f, sf::Color{33, 206, 108}),
-        Platforma(450, 200.f,600.f, 50.f, sf::Color{107, 31, 31}),
+        //mij sus
+        Platform(450.f, 180.f, 600.f, 20.f, sf::Color{33, 206, 108}),
+        Platform(450, 200.f,600.f, 50.f, sf::Color{107, 31, 31}),
 
-        //stanga sus de tot
-        Platforma(50.f, 130.f, 100.f, 20.f, sf::Color{33, 206, 108}),
-        Platforma(50.f, 150.f,100.f, 50.f, sf::Color{107, 31, 31})
+        //st sus de tot
+        Platform(50.f, 130.f, 100.f, 20.f, sf::Color{33, 206, 108}),
+        Platform(50.f, 150.f,100.f, 50.f, sf::Color{107, 31, 31})
     };
-
-    Scena joc(Mara, enemies, platforms);
-
-    std::cout << joc << std::endl;
 
     sf::Event event = {};
     sf::Font font;
     sf::Text win, lose;
 
     if (!font.loadFromFile("fonts/VomitoCartoon.ttf")) {
-        std::cerr << "Eroare la incarcarea fontului!" << std::endl;
+        std::cerr << "Font error!" << std::endl;
     }
 
     win.setFont(font);
@@ -146,8 +148,11 @@ int main() {
 
     bool gameWon = false;
 
-    std::vector<std::unique_ptr<Obiect>> obiecte, obiecteColectate;
-    initialObj(obiecte);
+    std::vector<std::unique_ptr<Object>> objects, collected_objects;
+    initialObj(objects);
+
+    Stage joc(Mara, enemies, platforms, std::move(objects));
+    std::cout << joc << std::endl;
 
     while (window.isOpen()) {
         window.setFramerateLimit(150);
@@ -159,38 +164,47 @@ int main() {
         sf::Time elapsedTime = gameClock.getElapsedTime();
         static float bonusTime = 0.f;
         float adjustedTime = elapsedTime.asSeconds() - bonusTime;
-        int totalseconds = static_cast<int>(adjustedTime);
-        int minutes = totalseconds / 60;
-        int seconds = totalseconds % 60;
-        timerText.setString("Timp: " + std::to_string(minutes) + "min " + std::to_string(seconds)+ "sec ");
-        scoreText.setString("Scor: " + std::to_string(score) + "p ");
+        int totalSeconds = static_cast<int>(adjustedTime);
+        int minutes = totalSeconds / 60;
+        int seconds = totalSeconds % 60;
+        bool ok;
+
+        if(totalSeconds >= 15) {
+            ok = true;
+        }
+        else {
+            ok = false;
+        }
+
+        timerText.setString("Time spent: " + std::to_string(minutes) + "min " + std::to_string(seconds)+ "sec ");
+        scoreText.setString("Score: " + std::to_string(score) + "p ");
 
         if(minutes >= 1 && score <= 3750) {
-            joc.getPersonaj().GameOver();
+            joc.getCharacter().GameOver();
             if(!gameWon) {
                 lose.setString("GAME OVER!! PRESS R TO RESTART");
                 window.draw(lose);
             }
         }
 
-        if ((joc.getPersonaj().getShape().getPosition().y > 600.f || joc.getPersonaj().getViata() <= 0) && !Mara.getIsOver()) {
-            joc.getPersonaj().GameOver();
+        if ((joc.getCharacter().getShape().getPosition().y > 600.f || joc.getCharacter().getHP() <= 0) && !Mara.getIsOver()) {
+            joc.getCharacter().GameOver();
             if(!gameWon) {
                 lose.setString("GAME OVER!! PRESS R TO RESTART");
                 window.draw(lose);
             }
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::G) && joc.getPersonaj().getIsOver()) {
-            Scena::analizaObiecte(obiecteColectate);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::G) && (joc.getCharacter().getIsOver() || gameWon)) {
+            Stage::gameStats(collected_objects);
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::R) && joc.getPersonaj().getIsOver()) {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::R) && joc.getCharacter().getIsOver()) {
             score = 0;
             bonusTime = 0;
             win.setString("");
             lose.setString("");
-            joc.getPersonaj().restart();
+            joc.getCharacter().restart();
             gameClock.restart();
-            initialObj(obiecte);
+            initialObj(objects);
             std::vector<std::tuple<int, float, float, float, float, std::string>> initialPositions = {
                 {1, 1100, 1350, 420, 420, "Cosmin"},
                 {4, 1250, 1400, 240, 240, "Victor"},
@@ -215,14 +229,14 @@ int main() {
         constexpr float gravity = 0.1f;
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-            joc.getPersonaj().walk(-1, joc.getPlatforms(), gravity);
+            joc.getCharacter().walk(-1, joc.getPlatforms(), gravity);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-            joc.getPersonaj().walk(1, joc.getPlatforms(), gravity);
+            joc.getCharacter().walk(1, joc.getPlatforms(), gravity);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-            joc.getPersonaj().jump();
-            joc.getPersonaj().resetJump();
+            joc.getCharacter().jump();
+            joc.getCharacter().resetJump();
         }
 
         joc.update(gravity);
@@ -231,11 +245,8 @@ int main() {
             platform.draw(window);
         }
 
-        for(const auto& obiect : obiecte) {
-            obiect -> draw(window);
-        }
-
-        joc.getPersonaj().collectObiecte(obiecte, obiecteColectate, score, bonusTime);
+        joc.drawObjects(window, adjustedTime);
+        joc.getCharacter().collectObjects(objects, collected_objects, score, bonusTime, ok);
 
         sf::Time deltaTime = clock.restart();
         float dt = deltaTime.asSeconds();
@@ -246,19 +257,19 @@ int main() {
             } else {
                 it->walk(dt);
                 it->draw(window);
-                joc.getPersonaj().attacked(*it);
-                joc.getPersonaj().kill(*it);
+                joc.getCharacter().attacked(*it);
+                joc.getCharacter().kill(*it);
                 ++it;
             }
         }
 
-        if (joc.getPersonaj().getIsOver() && !gameWon) {
+        if (joc.getCharacter().getIsOver() && !gameWon) {
             lose.setString("GAME OVER!! PRESS R TO RESTART");
             window.draw(lose);
-            joc.getPersonaj().GameOver();
+            joc.getCharacter().GameOver();
         }
 
-        if ( ((score >= 4250 && minutes == 1) || (score == 4500 && minutes <= 1)) && joc.getPersonaj().getViata()) {
+        if ( ((score >= 4250 && minutes == 1) || (score == 4500 && minutes <= 1)) && joc.getCharacter().getHP()) {
             gameWon = true;
             win.setString("T O P !! AI CASTIGAT");
             window.draw(win);

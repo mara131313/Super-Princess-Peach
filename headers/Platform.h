@@ -1,11 +1,11 @@
 #pragma once
 
-class Platforma
+class Platform
 {
 private:
     sf::RectangleShape platformShape;
 public:
-    Platforma(const float x, const float y, const float lung, const float lat, const sf::Color color) {
+    Platform(const float x, const float y, const float lung, const float lat, const sf::Color color) {
         platformShape.setSize(sf::Vector2f(lung, lat));
         platformShape.setPosition(x, y);
         platformShape.setFillColor(color);
@@ -13,16 +13,16 @@ public:
     const sf::RectangleShape& getShape() const {
         return platformShape;
     }
-    bool verif(const sf::RectangleShape& pers) const {
+    bool verify(const sf::RectangleShape& pers) const {
         return pers.getGlobalBounds().intersects(platformShape.getGlobalBounds()) &&
             pers.getPosition().y + pers.getSize().y <= platformShape.getPosition().y + 5.f;
     }
     void draw(sf::RenderWindow& window) const {
         window.draw(platformShape);
     }
-    ~Platforma() = default;
+    ~Platform() = default;
 
-    friend std::ostream& operator<<(std::ostream& os, const Platforma& platforma) {
+    friend std::ostream& operator<<(std::ostream& os, const Platform& platforma) {
         const auto& shape = platforma.platformShape;
         os << "Platforma de pozitie ("
            << shape.getPosition().x << ", "
@@ -31,5 +31,4 @@ public:
            << shape.getSize().y << ").";
         return os;
     }
-
 };

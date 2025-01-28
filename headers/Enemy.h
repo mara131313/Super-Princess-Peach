@@ -5,30 +5,30 @@
 
 class Enemy {
 private:
-    std::string nume;
-    int viata, atac, culoare;
-    float viteza, x1, x2, y1, y2, xrn, yrn;
+    std::string name;
+    int hp, attack, color;
+    float speed, x1, x2, y1, y2, xrn, yrn;
     bool isRight = true, isDown = true, isAlive = true;
     sf::RectangleShape shape;
 
 public:
-    Enemy() : nume("Inamic"), viata(50), atac(50), culoare(6), viteza(0.8f), x1(0), x2(0), y1(0), y2(0), xrn(0), yrn(0){
+    Enemy() : name("Inamic"), hp(50), attack(50), color(6), speed(0.8f), x1(0), x2(0), y1(0), y2(0), xrn(0), yrn(0){
         shape.setSize(sf::Vector2f(40.f, 60.f));
         setShapeColor();
         shape.setPosition(xrn, yrn);
     }
 
-    Enemy(std::string _nume, int _viata, int _atac, int _culoare, float _viteza, float _x1, float _x2, float _y1,
+    Enemy(std::string _name, int _hp, int _attack, int _color, float _speed, float _x1, float _x2, float _y1,
         float _y2, float _xrn, float _yrn) :
-        nume(std::move(_nume)), viata(_viata), atac(_atac), culoare(_culoare), viteza(_viteza), x1(_x1), x2(_x2), y1(_y1),
+        name(std::move(_name)), hp(_hp), attack(_attack), color(_color), speed(_speed), x1(_x1), x2(_x2), y1(_y1),
         y2(_y2), xrn(_xrn), yrn(_yrn) {
         shape.setSize(sf::Vector2f(40.f, 60.f));
         setShapeColor();
         shape.setPosition(xrn, yrn);
     }
 
-    Enemy(const Enemy& altEnemies) : nume(altEnemies.nume), viata(altEnemies.viata), atac(altEnemies.atac), culoare(altEnemies.culoare),
-    viteza(altEnemies.viteza), x1(altEnemies.x1), x2(altEnemies.x2), y1(altEnemies.y1), y2(altEnemies.y2),
+    Enemy(const Enemy& altEnemies) : name(altEnemies.name), hp(altEnemies.hp), attack(altEnemies.attack), color(altEnemies.color),
+    speed(altEnemies.speed), x1(altEnemies.x1), x2(altEnemies.x2), y1(altEnemies.y1), y2(altEnemies.y2),
     xrn(altEnemies.xrn), yrn(altEnemies.yrn), isRight(altEnemies.isRight), isDown(altEnemies.isDown),
     isAlive(altEnemies.isAlive), shape(altEnemies.shape) {
         std::cout << "Constructor de copiere" << std::endl;
@@ -37,10 +37,10 @@ public:
     Enemy& operator=(const Enemy& altEnemy) {
         if (this == &altEnemy)
             return *this;
-        viata = altEnemy.viata;
-        atac = altEnemy.atac;
-        culoare = altEnemy.culoare;
-        viteza = altEnemy.viteza;
+        hp = altEnemy.hp;
+        attack = altEnemy.attack;
+        color = altEnemy.color;
+        speed = altEnemy.speed;
         x1 = altEnemy.x1;
         x2 = altEnemy.x2;
         y1 = altEnemy.y1;
@@ -53,12 +53,12 @@ public:
     }
 
     Enemy(Enemy&& altEnemy) noexcept :
-    viata(altEnemy.viata), atac(altEnemy.atac), culoare(altEnemy.culoare), viteza(altEnemy.viteza), x1(altEnemy.x1),
+    hp(altEnemy.hp), attack(altEnemy.attack), color(altEnemy.color), speed(altEnemy.speed), x1(altEnemy.x1),
     x2(altEnemy.x2), y1(altEnemy.y1), y2(altEnemy.y2), xrn(altEnemy.xrn), yrn(altEnemy.yrn),
     isRight(altEnemy.isRight), isDown(altEnemy.isDown), isAlive(altEnemy.isAlive), shape(std::move(altEnemy.shape)) {
-        altEnemy.viata = 0;
-        altEnemy.atac = 0;
-        altEnemy.viteza = 0;
+        altEnemy.hp = 0;
+        altEnemy.attack = 0;
+        altEnemy.speed = 0;
         altEnemy.x1 = 0;
         altEnemy.x2 = 0;
         altEnemy.y1 = 0;
@@ -74,10 +74,10 @@ public:
     Enemy& operator=(Enemy&& altEnemy) noexcept {
         if (this == &altEnemy)
             return *this;
-        viata = altEnemy.viata;
-        atac = altEnemy.atac;
-        culoare = altEnemy.culoare;
-        viteza = altEnemy.viteza;
+        hp = altEnemy.hp;
+        attack = altEnemy.attack;
+        color = altEnemy.color;
+        speed = altEnemy.speed;
         x1 = altEnemy.x1;
         x2 = altEnemy.x2;
         y1 = altEnemy.y1;
@@ -89,9 +89,9 @@ public:
         isAlive = altEnemy.isAlive;
         shape = std::move(altEnemy.shape);
 
-        altEnemy.viata = 0;
-        altEnemy.atac = 0;
-        altEnemy.viteza = 0;
+        altEnemy.hp = 0;
+        altEnemy.attack = 0;
+        altEnemy.speed = 0;
         altEnemy.x1 = 0;
         altEnemy.x2 = 0;
         altEnemy.y1 = 0;
@@ -106,12 +106,12 @@ public:
         return *this;
     }
 
-    [[nodiscard]] int getAtac() const {
-        return atac;
+    [[nodiscard]] int getAttack() const {
+        return attack;
     }
 
     void setShapeColor() {
-        switch (culoare) {
+        switch (color) {
             case 1: shape.setFillColor(sf::Color::Green);
             break;
             case 2: shape.setFillColor(sf::Color{107, 31, 31});
@@ -134,13 +134,13 @@ public:
     void walk(const float deltaTime) {
         if (y1 == y2 && isAlive) {
             if (isRight) {
-                xrn += viteza * 4 * deltaTime;
+                xrn += speed * 4 * deltaTime;
                 if (xrn >= x2) {
                     xrn = x2;
                     isRight = false;
                 }
             } else {
-                xrn -= viteza * 4 * deltaTime;
+                xrn -= speed * 4 * deltaTime;
                 if (xrn <= x1) {
                     xrn = x1;
                     isRight = true;
@@ -150,13 +150,13 @@ public:
         }
         if (x1 == x2 && isAlive) {
             if(isDown) {
-                yrn += viteza * 4 * deltaTime;
+                yrn += speed * 4 * deltaTime;
                 if (yrn >= y2) {
                     yrn = y2;
                     isDown = false;
                 }
             } else {
-                yrn -= viteza * 4 * deltaTime;
+                yrn -= speed * 4 * deltaTime;
                 if (yrn <= y1) {
                     yrn = y1;
                     isDown = true;
@@ -167,7 +167,7 @@ public:
     }
 
     void die() {
-        viata = 0;
+        hp = 0;
         isAlive = false;
         shape.setPosition(1600, 800);
     }
@@ -176,15 +176,15 @@ public:
         return isAlive;
     }
 
-    void setNume(const std::string& e) {
+    void setName(const std::string& e) {
         if (!e.empty()) {
-            nume = e;
+            name = e;
         } else {
             std::cerr << "Nume invalid!\n";
         }
     }
 
-    void setPozi(const float a, const float b, const float c, const float d) {
+    void setPoz(const float a, const float b, const float c, const float d) {
         x1 = a;
         x2 = b;
         y1 = c;
@@ -206,7 +206,7 @@ public:
     ~Enemy() = default;
 
     friend std::ostream& operator<<(std::ostream& os, const Enemy& enemy) {
-        os << enemy.nume << " ataca cu "<< enemy.atac;
+        os << enemy.name << " ataca cu "<< enemy.attack;
         if (enemy.x1 == enemy.x2) {
             os <<  " damage. Se deplaseaza de sus in jos, de la y = " << enemy.y1 << " pana la y = " << enemy.y2 << std::endl;
         }
