@@ -5,7 +5,7 @@ class Coins : public Object {
 private:
     int val;
 public:
-    Coins(const float x, const float y, const int val = 50)
+    Coins(const float x, const float y, const int val)
         : Object(x, y, 10, sf::Color::Yellow), val(val) {
     }
 

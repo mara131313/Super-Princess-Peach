@@ -18,6 +18,44 @@ public:
     Stage(const Character& p, std::vector<Enemy>& e, const std::vector<Platform>& plat, std::vector<std::unique_ptr<Object>>&& o)
         : character(p), enemies(std::move(e)), platforms(plat), objects(std::move(o)) {}
 
+    Stage(const Stage& other)
+    : character(other.character),
+      enemies(other.enemies),
+      platforms(other.platforms),
+      objects{}
+    {
+        for (const auto& obj : other.objects) {
+            objects.emplace_back(obj->clone());
+        }
+    }
+
+    Stage(Stage&& other) noexcept
+        : character(other.character), enemies(std::move(other.enemies)), platforms(std::move(other.platforms)),
+          objects(std::move(other.objects)) {}
+
+    Stage& operator=(const Stage& other) {
+        if (this != &other) {
+            character = other.character;
+            enemies = other.enemies;
+            platforms = other.platforms;
+
+            objects.clear();
+
+            for (const auto& obj : other.objects) {
+                objects.emplace_back(obj->clone());
+            }
+        }
+        return *this;
+    }
+
+    friend void swap(Stage& first, Stage& second) noexcept {
+        using std::swap;
+        swap(first.character, second.character);
+        swap(first.enemies, second.enemies);
+        swap(first.platforms, second.platforms);
+        swap(first.objects, second.objects);
+    }
+
     Character& getCharacter() {
         return character;
     }
@@ -61,12 +99,16 @@ public:
         character.draw(window);
     }
 
+    void reset(const Stage& initialStage) {
+        *this = initialStage;
+    }
+
+
     static void gameStats(const std::vector<std::unique_ptr<Object>>& collectedObjects) {
         int totalCoins = 0;
         int totalHeal = 0;
         int totalTimeBoosts = 0;
-
-        std::cout << "Numarul de obiecte colectate in total: " << Object::getCntObj() << std::endl;
+        std::cout << "\nNumarul de obiecte colectate in total: " << Object::getCntObj() << std::endl << std::endl;
 
         for (const auto& object : collectedObjects) {
             if (const auto* heal = dynamic_cast<Heal*>(object.get())) {

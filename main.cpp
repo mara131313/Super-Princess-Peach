@@ -1,4 +1,3 @@
-#include <tuple>
 #include "headers/Stage.h"
 #include "headers/Coins.h"
 #include "headers/Heal.h"
@@ -186,13 +185,15 @@ int main() {
             Stage::gameStats(collected_objects);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::R) && joc.getCharacter().getIsOver()) {
-            score = 0;
-            bonusTime = 0;
+            score = 0; bonusTime = 0;
             win.setString("");
             lose.setString("");
             joc.getCharacter().restart();
-            gameClock.restart();
+            collected_objects.clear();
+            Stage newGame = joc;
+            std::swap(joc, newGame);
             initialObj(objects);
+
             std::vector<std::tuple<int, float, float, float, float, std::string>> initialPositions = {
                 {1, 1100, 1350, 420, 420, "Cosmin"},
                 {4, 1250, 1400, 240, 240, "Victor"},
@@ -207,6 +208,7 @@ int main() {
         std::get<2>(position), std::get<3>(position), std::get<4>(position), std::get<1>(position), std::get<3>(position) );
                 joc.getEnemies().back().reset();
             }
+            gameClock.restart();
         }
 
         timerText.setString("Time spent: " + std::to_string(minutes) + "min " + std::to_string(seconds)+ "sec");
