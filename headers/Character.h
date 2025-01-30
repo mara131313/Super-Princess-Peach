@@ -171,6 +171,10 @@ public:
         checkEnemyCollisions(enemies);
     }
 
+    int getHP() const {
+        return hp;
+    }
+
     void resetJump() {
         isJumping = false;
         speed = 5.f;
@@ -178,10 +182,6 @@ public:
 
     const sf::RectangleShape& getShape() const {
         return shape;
-    }
-
-    int getHP() const {
-        return hp;
     }
 
     int getIsOver() const {
@@ -201,29 +201,32 @@ public:
         std::cout << "Ai reinceput jocul!" << std::endl;
     }
 
-    void collectObjects(std::vector<std::unique_ptr<Object>>& objects, std::vector<std::unique_ptr<Object>>& collectedObjects,
-        int& score, float& seconds, const bool ok) {
+    void collectObjects(std::vector<std::shared_ptr<Object>> &objects, std::vector<std::shared_ptr<Object>> &collectedObjects,
+                    int& score, float& seconds, const bool ok) {
         for (auto it = objects.begin(); it != objects.end();) {
             if ((*it)->checkCollision(shape) && (*it)->isVisible()) {
                 (*it)->action();
-                if (const auto* heal = dynamic_cast<Heal*>(it->get())) {
+                if (const auto heal = std::dynamic_pointer_cast<Heal>(*it)) {
                     score += 100;
                     heal->interact();
                     addHP();
-                } else if (const auto* bani = dynamic_cast<Coins*>(it->get())) {
-                    score += bani->getVal();
+                }
+                else if (const auto bani = std::dynamic_pointer_cast<Coins>(*it)) {
+                    score += 50;
                     bani->interact();
-                } else if (const auto* timeBoost = dynamic_cast<TimeBoost*>(it->get())) {
+                }
+                else if (const auto timeBoost = std::dynamic_pointer_cast<TimeBoost>(*it)) {
                     timeBoost->print(std::cout);
                     timeBoost->interact();
                     if (ok) {
                         seconds += 15;
                     }
                     score += 100;
-                } else {
+                }
+                else {
                     (*it)->interact();
                 }
-                collectedObjects.push_back((*it)->clone());
+                collectedObjects.push_back(std::move(*it));
                 it = objects.erase(it);
             } else {
                 ++it;

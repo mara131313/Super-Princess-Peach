@@ -21,11 +21,7 @@ public:
         }
     }
 
-    int getHeal() const {
-        return hp;
-    }
-
-    std::unique_ptr<Object> clone() const override {
+    std::shared_ptr<Object> clone() const override {
         return std::make_unique<Heal>(*this);
     }
 };

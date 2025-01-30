@@ -2,6 +2,7 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <utility>
+#include "GameException.h"
 
 class Enemy {
 private:
@@ -27,12 +28,7 @@ public:
         shape.setPosition(xrn, yrn);
     }
 
-    Enemy(const Enemy& altEnemies) : name(altEnemies.name), hp(altEnemies.hp), attack(altEnemies.attack), color(altEnemies.color),
-    speed(altEnemies.speed), x1(altEnemies.x1), x2(altEnemies.x2), y1(altEnemies.y1), y2(altEnemies.y2),
-    xrn(altEnemies.xrn), yrn(altEnemies.yrn), isRight(altEnemies.isRight), isDown(altEnemies.isDown),
-    isAlive(altEnemies.isAlive), shape(altEnemies.shape) {
-        std::cout << "Constructor de copiere" << std::endl;
-    }
+    Enemy(const Enemy& altEnemies) = default;
 
     Enemy& operator=(const Enemy& altEnemy) {
         if (this == &altEnemy)
@@ -68,7 +64,6 @@ public:
         altEnemy.isRight = true;
         altEnemy.isDown = true;
         altEnemy.isAlive = true;
-        std::cout << "Enemy mutat!" << std::endl;
     }
 
     Enemy& operator=(Enemy&& altEnemy) noexcept {
@@ -101,7 +96,6 @@ public:
         altEnemy.isRight = true;
         altEnemy.isDown = true;
         altEnemy.isAlive = true;
-        std::cout << "Enemy atribuit prin mutare!" << std::endl;
 
         return *this;
     }
@@ -176,21 +170,18 @@ public:
         return isAlive;
     }
 
-    void setName(const std::string& e) {
-        if (!e.empty()) {
-            name = e;
-        } else {
-            std::cerr << "Nume invalid!\n";
-        }
-    }
-
-    void setPoz(const float a, const float b, const float c, const float d) {
+    void makeChange(const float a, const float b, const float c, const float d, const std::string& e) {
         x1 = a;
         x2 = b;
         y1 = c;
         y2 = d;
         xrn = a;
         yrn = c;
+        if (!e.empty()) {
+            name = e;
+        } else {
+            throw EnemyException("Enemy name is invalid.");
+        }
     }
 
     void reset() {

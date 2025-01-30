@@ -11,12 +11,12 @@ private:
     Character character;
     std::vector<Enemy> enemies;
     std::vector<Platform> platforms;
-    std::vector<std::unique_ptr<Object>> objects;
+    std::vector<std::shared_ptr<Object>> objects;
     sf::Clock clock;
 
 public:
-    Stage(const Character& p, std::vector<Enemy>& e, const std::vector<Platform>& plat, std::vector<std::unique_ptr<Object>>&& o)
-        : character(p), enemies(std::move(e)), platforms(plat), objects(std::move(o)) {}
+    Stage(const Character& p, std::vector<Enemy>& e, const std::vector<Platform>& plat, const std::vector<std::shared_ptr<Object>>& o)
+        : character(p), enemies(std::move(e)), platforms(plat), objects(o) {}
 
     Stage(const Stage& other)
     : character(other.character),
@@ -38,7 +38,6 @@ public:
             character = other.character;
             enemies = other.enemies;
             platforms = other.platforms;
-
             objects.clear();
 
             for (const auto& obj : other.objects) {
@@ -54,18 +53,6 @@ public:
         swap(first.enemies, second.enemies);
         swap(first.platforms, second.platforms);
         swap(first.objects, second.objects);
-    }
-
-    Character& getCharacter() {
-        return character;
-    }
-
-    std::vector<Enemy>& getEnemies() {
-        return enemies;
-    }
-
-    const std::vector<Platform>& getPlatforms() const {
-        return platforms;
     }
 
     void drawObjects(sf::RenderWindow& window, float adjustedTime) const {
@@ -103,18 +90,17 @@ public:
         *this = initialStage;
     }
 
-
-    static void gameStats(const std::vector<std::unique_ptr<Object>>& collectedObjects) {
+    static void gameStats(const std::vector<std::shared_ptr<Object>>& collectedObjects) {
         int totalCoins = 0;
         int totalHeal = 0;
         int totalTimeBoosts = 0;
         std::cout << "\nNumarul de obiecte colectate in total: " << Object::getCntObj() << std::endl << std::endl;
 
         for (const auto& object : collectedObjects) {
-            if (const auto* heal = dynamic_cast<Heal*>(object.get())) {
-                totalHeal += heal->getHeal();
-            } else if (const auto* coins = dynamic_cast<Coins*>(object.get())) {
-                totalCoins += coins->getVal();
+            if (dynamic_cast<Heal*>(object.get())) {
+                totalHeal += 25;
+            } else if (dynamic_cast<Coins*>(object.get())) {
+                totalCoins += 50;
             } else if (dynamic_cast<TimeBoost*>(object.get())) {
                 ++totalTimeBoosts;
             }
