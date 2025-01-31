@@ -194,7 +194,7 @@ int main() {
                 std::swap(joc, newGame);
                 initialObj(objects);
                 joc.restart(objects);
-                
+
                 if (objects.empty()) {
                     throw ObjectException("Failed to create objects!");
                 }
