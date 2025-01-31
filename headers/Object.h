@@ -69,12 +69,6 @@ public:
         return cntObj;
     }
 
-    void moveTo() {
-        this->x = x;
-        this->y = y;
-        shape.setPosition(x, y);
-    }
-
     void draw(sf::RenderWindow& window) const {
         if (visible && !isCollected) {
             window.draw(shape);
