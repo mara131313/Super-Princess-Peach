@@ -21,11 +21,7 @@ public:
         shape.setFillColor(color);
     }
 
-    virtual ~Object() {
-        if (isCollected) {
-            --cntObj;
-        }
-    }
+    virtual ~Object() = default;
 
     virtual std::shared_ptr<Object> clone() const = 0;
     virtual void interact() const = 0;
@@ -66,28 +62,17 @@ public:
     void resetState() {
         isCollected = false;
         visible = true;
+        cntObj = 0;
     }
 
     static int getCntObj() {
         return cntObj;
     }
 
-    sf::Vector2f getPosition() const {
-        return shape.getPosition();
-    }
-
-    void moveTo(const float x, const float y) {
+    void moveTo() {
         this->x = x;
         this->y = y;
         shape.setPosition(x, y);
-    }
-
-    sf::Vector2f getPos() const {
-        return pos;
-    }
-
-    void resetPosition() {
-        moveTo(pos.x, pos.y);
     }
 
     void draw(sf::RenderWindow& window) const {

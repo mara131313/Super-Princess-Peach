@@ -15,8 +15,8 @@ private:
     sf::Clock clock;
 
 public:
-    Stage(const Character& p, std::vector<Enemy>& e, const std::vector<Platform>& plat, const std::vector<std::shared_ptr<Object>>& o)
-        : character(p), enemies(std::move(e)), platforms(plat), objects(o) {}
+    Stage(const Character& p, const std::vector<Enemy>& e, const std::vector<Platform>& plat, const std::vector<std::shared_ptr<Object>>& o)
+        : character(p), enemies(e), platforms(plat), objects(o) {}
 
     Stage(const Stage& other)
     : character(other.character),
@@ -64,8 +64,7 @@ public:
         }
     }
 
-    void update(const float grav) {
-        character.update(platforms, grav, enemies);
+    void update() {
         for (auto& enemy : enemies) {
             if (enemy.getIsAlive()) {
                 enemy.walk(clock.getElapsedTime().asSeconds());
@@ -75,19 +74,16 @@ public:
     }
 
     void draw(sf::RenderWindow& window) const {
-        for (const auto& enemy : enemies) {
-            if (enemy.getIsAlive()) {
-                enemy.draw(window);
-            }
-        }
         for (const auto& platform : platforms) {
             platform.draw(window);
         }
-        character.draw(window);
     }
 
-    void reset(const Stage& initialStage) {
-        *this = initialStage;
+void restart(const std::vector<std::shared_ptr<Object>>& newObj) {
+        objects = newObj;
+        for (const auto& obj : objects) {
+            obj -> resetState();
+        }
     }
 
     static void gameStats(const std::vector<std::shared_ptr<Object>>& collectedObjects) {

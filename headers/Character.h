@@ -95,16 +95,16 @@ public:
         const float enemyDr = enemy.getShape().getPosition().x + enemy.getShape().getSize().x;
         const float enemySus = enemy.getShape().getPosition().y;
 
-        if (MaraDr > enemySt && MaraSt < enemyDr &&
-            MaraJos <= enemySus + 5 && MaraJos >= enemySus - 5) {
+        if (MaraDr > enemySt && MaraSt < enemyDr && MaraJos <= enemySus + 5 && MaraJos >= enemySus - 5) {
             enemy.die();
             std::cout << "Inamicul a fost omorat!" << std::endl;
-            }
+        }
     }
 
     void checkEnemyCollisions(const std::vector<Enemy>& enemies) {
-        for (const auto& enemy : enemies) {
-            attacked(enemy);
+        for (Enemy enemy : enemies) {
+            attacked(dynamic_cast<const Enemy &&>(enemy));
+            kill(enemy);
         }
     }
 

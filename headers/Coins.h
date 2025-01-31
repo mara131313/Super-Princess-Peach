@@ -2,11 +2,9 @@
 #include "Object.h"
 
 class Coins : public Object {
-private:
-    int val;
 public:
-    Coins(const float x, const float y, const int val)
-        : Object(x, y, 10, sf::Color::Yellow), val(val) {
+    Coins(const float x, const float y)
+        : Object(x, y, 10, sf::Color::Yellow) {
     }
 
     void interact() const override {
