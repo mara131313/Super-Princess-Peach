@@ -103,7 +103,7 @@ public:
 
     void checkEnemyCollisions(const std::vector<Enemy>& enemies) {
         for (Enemy enemy : enemies) {
-            attacked(dynamic_cast<const Enemy &&>(enemy));
+            attacked(enemy);
             kill(enemy);
         }
     }

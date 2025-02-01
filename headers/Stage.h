@@ -84,6 +84,15 @@ void restart(const std::vector<std::shared_ptr<Object>>& newObj) {
         for (const auto& obj : objects) {
             obj -> resetState();
         }
+        for (const auto& object : newObj) {
+            if (dynamic_cast<Heal*>(object.get())) {
+                Heal::setCnt();
+            } else if (dynamic_cast<Coins*>(object.get())) {
+                Coins::setCnt();
+            } else if (dynamic_cast<TimeBoost*>(object.get())) {
+                TimeBoost::setCnt();
+            }
+        }
     }
 
     static void gameStats(const std::vector<std::shared_ptr<Object>>& collectedObjects) {

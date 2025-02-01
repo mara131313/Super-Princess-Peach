@@ -1,46 +1,52 @@
 #include "headers/Stage.h"
-#include "headers/Coins.h"
-#include "headers/Heal.h"
-#include "headers/TimeBoost.h"
+#include "headers/ObjectFactory.h"
+#include "headers/AchievementManager.h"
 
 int Object::cntObj = 0;
+int Coins::cntC = 0;
+int Heal::cntH = 0;
+int TimeBoost::cntT = 0;
 
-void initialObj(std::vector<std::shared_ptr<Object> > &objects) {
+void initialObj(std::vector<std::shared_ptr<Object>> &objects) {
     objects.clear();
-    for( int i = 10; i <= 610; i += 40) {
-        objects.emplace_back(std::make_shared<Coins>(i, 450.f));
+
+    for (int i = 10; i <= 610; i += 40) {
+        objects.emplace_back(ObjectFactory::createObject("Coin", static_cast<float>(i), 450.f));
     }
-    for( int i = 480; i <= 1000; i += 40) {
-        objects.emplace_back(std::make_shared<Coins>(i, 150.f));
+    for (int i = 480; i <= 1000; i += 40) {
+        objects.emplace_back(ObjectFactory::createObject("Coin", static_cast<float>(i), 150.f));
     }
-    for( int i = 1080; i <= 1480; i += 40) {
-        objects.emplace_back(std::make_shared<Coins>(i, 450.f));
+    for (int i = 1080; i <= 1480; i += 40) {
+        objects.emplace_back(ObjectFactory::createObject("Coin", static_cast<float>(i), 450.f));
     }
-    for( int i = 400; i <= 480; i += 40) {
-        objects.emplace_back(std::make_shared<Coins>(i, 300.f));
+    for (int i = 400; i <= 480; i += 40) {
+        objects.emplace_back(ObjectFactory::createObject("Coin", static_cast<float>(i), 300.f));
     }
-    for( int i = 920; i <= 1000; i += 40) {
-        objects.emplace_back(std::make_shared<Coins>(i, 300.f));
+    for (int i = 920; i <= 1000; i += 40) {
+        objects.emplace_back(ObjectFactory::createObject("Coin", static_cast<float>(i), 300.f));
     }
-    for( int i = 670; i <= 750; i += 40) {
-        objects.emplace_back(std::make_shared<Coins>(i, 300.f));
+    for (int i = 670; i <= 750; i += 40) {
+        objects.emplace_back(ObjectFactory::createObject("Coin", static_cast<float>(i), 300.f));
     }
-    objects.emplace_back(std::make_shared<Coins>(1300.f, 240.f));
-    objects.emplace_back(std::make_shared<Coins>(1265.f, 230.f));
-    objects.emplace_back(std::make_shared<Coins>(1335.f, 230.f));
-    objects.emplace_back(std::make_shared<Coins>(1230.f, 210.f));
-    objects.emplace_back(std::make_shared<Coins>(1370.f, 210.f));
-    objects.emplace_back(std::make_shared<Coins>(1220.f, 170.f));
-    objects.emplace_back(std::make_shared<Coins>(1380.f, 170.f));
-    objects.emplace_back(std::make_shared<Coins>(1370.f, 130.f));
-    objects.emplace_back(std::make_shared<Coins>(1230.f, 130.f));
-    objects.emplace_back(std::make_shared<Coins>(1335.f, 110.f));
-    objects.emplace_back(std::make_shared<Coins>(1265.f, 110.f));
-    objects.emplace_back(std::make_shared<Coins>(1300.f, 100.f));
-    objects.emplace_back(std::make_shared<Heal>(1450.f, 420.f, 25));
-    objects.emplace_back(std::make_shared<Heal>(85.f, 70.f, 25));
-    objects.emplace_back(std::make_shared<TimeBoost>(835.f, 400.f, 15.0f));
-    objects.emplace_back(std::make_shared<TimeBoost>(1295.f, 165.f, 15.0f));
+
+    objects.emplace_back(ObjectFactory::createObject("Coin", 1300.f, 240.f));
+    objects.emplace_back(ObjectFactory::createObject("Coin", 1265.f, 230.f));
+    objects.emplace_back(ObjectFactory::createObject("Coin", 1335.f, 230.f));
+    objects.emplace_back(ObjectFactory::createObject("Coin", 1230.f, 210.f));
+    objects.emplace_back(ObjectFactory::createObject("Coin", 1370.f, 210.f));
+    objects.emplace_back(ObjectFactory::createObject("Coin", 1220.f, 170.f));
+    objects.emplace_back(ObjectFactory::createObject("Coin", 1380.f, 170.f));
+    objects.emplace_back(ObjectFactory::createObject("Coin", 1370.f, 130.f));
+    objects.emplace_back(ObjectFactory::createObject("Coin", 1230.f, 130.f));
+    objects.emplace_back(ObjectFactory::createObject("Coin", 1335.f, 110.f));
+    objects.emplace_back(ObjectFactory::createObject("Coin", 1265.f, 110.f));
+    objects.emplace_back(ObjectFactory::createObject("Coin", 1300.f, 100.f));
+
+    objects.emplace_back(ObjectFactory::createObject("Heal", 1450.f, 420.f, 25));
+    objects.emplace_back(ObjectFactory::createObject("Heal", 85.f, 70.f, 25));
+
+    objects.emplace_back(ObjectFactory::createObject("TimeBoost", 835.f, 400.f, 15.0f));
+    objects.emplace_back(ObjectFactory::createObject("TimeBoost", 1295.f, 165.f, 15.0f));
 }
 
 int main() {
@@ -194,7 +200,7 @@ int main() {
                 std::swap(joc, newGame);
                 initialObj(objects);
                 joc.restart(objects);
-
+                AchievementManager::getInstance().lockAllAchievements();
                 if (objects.empty()) {
                     throw ObjectException("Failed to create objects!");
                 }
@@ -256,6 +262,10 @@ int main() {
                     Mara.kill(*it);
                     ++it;
                 }
+            }
+
+            if (enemies.empty()) {
+                AchievementManager::getInstance().unlockAchievement("Slayer");
             }
 
             if (Mara.getIsOver() && !gameWon) {

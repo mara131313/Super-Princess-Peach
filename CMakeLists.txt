@@ -68,6 +68,9 @@ add_executable(${PROJECT_NAME}
         headers/TimeBoost.h
         headers/Heal.h
         headers/GameException.h
+        headers/Achievement.h
+        headers/AchievementManager.h
+        headers/ObjectFactory.h
 )
 
 include(cmake/CompilerFlags.cmake)

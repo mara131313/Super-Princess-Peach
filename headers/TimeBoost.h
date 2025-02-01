@@ -4,6 +4,7 @@
 class TimeBoost : public Object {
 private:
     float time;
+    static int cntT;
 
 public:
     TimeBoost(const float x, const float y, const float time = 30.f) :
@@ -11,6 +12,14 @@ public:
 
     void interact() const override {
         std::cout << " Ai primit " << time << " secunde aditionale." << std::endl;
+        cntT++;
+        if (cntT == 2) {
+            AchievementManager::getInstance().unlockAchievement("Time Saver");
+        }
+    }
+
+    static void setCnt() {
+        cntT = 0;
     }
 
     void makeAppear(float& adjustedTime) override {
